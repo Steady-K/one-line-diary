@@ -12,7 +12,7 @@ interface LalaCharacterProps {
 // 라라 스타일 감정별 캐릭터 설정
 const lalaEmotions = {
   "😊": {
-    name: "행복한 라라",
+    name: "행복 라라",
     image: "/characters/lala-happy.png",
     color: "#FFD93D",
     message: "오늘도 행복한 하루였구나! 🌟",
@@ -40,21 +40,21 @@ const lalaEmotions = {
     animation: "sleepy-sway",
   },
   "😮": {
-    name: "황당한 라라",
+    name: "황당 라라",
     image: "/characters/lala-surprised.png",
     color: "#FF8C00",
     message: "이런 황당한 일이! 괜찮아, 그럴 수도 있지 😮",
     animation: "jiggle",
   },
   "🤔": {
-    name: "생각중 라라",
+    name: "생각 라라",
     image: "/characters/lala-thinking.png",
     color: "#95A5A6",
     message: "많은 생각이 있었구나... 천천히 정리해보자 🤔",
     animation: "thoughtful-nod",
   },
   "😍": {
-    name: "사랑스러운 라라",
+    name: "사랑 라라",
     image: "/characters/lala-loving.png",
     color: "#FF69B4",
     message: "사랑이 가득한 하루네! 마음이 따뜻해져 💕",
@@ -68,7 +68,7 @@ const lalaEmotions = {
     animation: "cool-pose",
   },
   "😅": {
-    name: "당황한 라라",
+    name: "당황 라라",
     image: "/characters/lala-embarrassed.png",
     color: "#FF9800",
     message: "당황스러운 일이 있었구나... 웃음이 나와 😅",
@@ -139,8 +139,8 @@ export default function LalaCharacter({
 
       {/* 캐릭터 이름과 레벨 - 이미지 아래 */}
       <div className="mt-4 text-center">
-        <div className="bg-white rounded-full px-2 py-1 shadow-md border text-xs inline-block">
-          <p className="font-bold text-gray-800">{lala.name}</p>
+        <div className="bg-white rounded-full px-2 py-1 shadow-md border text-xs inline-block w-20">
+          <p className="font-bold text-gray-800 truncate">{lala.name}</p>
           <p className="text-gray-600">Lv.{level}</p>
         </div>
       </div>
@@ -158,16 +158,13 @@ export default function LalaCharacter({
         </p>
       </div>
 
-      {/* 클릭 시 나타나는 메시지 */}
+      {/* 클릭 시 나타나는 메시지 - 위쪽 고정 */}
       {showMessage && (
-        <div className="absolute top-full mt-4 left-1/2 transform -translate-x-1/2 z-20 px-4">
-          <div className="bg-white rounded-lg p-3 sm:p-4 shadow-xl border-2 border-purple-200 w-64 sm:w-72 max-w-[calc(100vw-2rem)]">
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 w-full max-w-md">
+          <div className="bg-white rounded-lg p-3 sm:p-4 shadow-xl border-2 border-purple-200 mx-auto">
             <p className="text-xs sm:text-sm text-gray-800 text-center font-medium leading-relaxed break-words">
               {lala.message}
             </p>
-            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-              <div className="w-0 h-0 border-l-6 border-r-6 border-b-6 border-transparent border-b-white"></div>
-            </div>
           </div>
         </div>
       )}
