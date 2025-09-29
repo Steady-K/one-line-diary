@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
       session.user.id,
       month,
       year,
-      session.user.email
+      session.user.email || undefined
     );
 
     return NextResponse.json(stats);

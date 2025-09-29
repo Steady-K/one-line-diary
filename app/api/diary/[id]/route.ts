@@ -28,7 +28,7 @@ export async function PUT(
     }
 
     const userId = parseInt(session.user.id);
-    const userEmail = session.user.email;
+    const userEmail = session.user.email || undefined;
 
     // 일기 수정
     const updatedDiary = await diaryService.updateDiary(
@@ -74,7 +74,7 @@ export async function DELETE(
     const { id } = await params;
 
     const userId = parseInt(session.user.id);
-    const userEmail = session.user.email;
+    const userEmail = session.user.email || undefined;
 
     // 일기 삭제
     const success = await diaryService.deleteDiary(

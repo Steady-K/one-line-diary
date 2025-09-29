@@ -10,17 +10,17 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const userEmail = session.user.email; // 이메일 추가
+    const userEmail = session.user.email || undefined; // 이메일 추가
 
     // 사용자의 업적 조회
     const achievements = await achievementService.getUserAchievements(
-      session.user.id,
+      parseInt(session.user.id) || 0,
       userEmail
     );
 
     // 업적 진행률 조회
     const progress = await achievementService.getAchievementProgress(
-      session.user.id,
+      parseInt(session.user.id) || 0,
       userEmail
     );
 
@@ -41,13 +41,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const userEmail = session.user.email; // 이메일 추가
+    const userEmail = session.user.email || undefined; // 이메일 추가
     const { type, title, description, icon } = await request.json();
 
     // 이미 달성한 업적인지 확인
     const existingAchievement =
       await achievementService.getUserAchievementByType(
-        session.user.id,
+        parseInt(session.user.id) || 0,
         type,
         userEmail
       );

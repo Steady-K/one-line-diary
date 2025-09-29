@@ -807,6 +807,8 @@ export const subscriptionService = {
   async createSubscription(
     subscriptionData: Omit<Subscription, "id" | "created_at" | "updated_at">
   ): Promise<Subscription | null> {
+    console.log("구독 생성 시도:", subscriptionData);
+
     const { data, error } = await supabase
       .from("subscriptions")
       .insert([subscriptionData])
@@ -815,13 +817,41 @@ export const subscriptionService = {
 
     if (error) {
       console.error("구독 생성 오류:", error);
+      console.error("구독 데이터:", subscriptionData);
       return null;
     }
+
+    console.log("구독 생성 성공:", data);
     return data;
   },
 
-  // 구독 업데이트
+  // 구독 업데이트 (ID로)
   async updateSubscription(
+    subscriptionId: number,
+    updates: Partial<Subscription>
+  ): Promise<Subscription | null> {
+    console.log("구독 업데이트 시도:", { subscriptionId, updates });
+
+    const { data, error } = await supabase
+      .from("subscriptions")
+      .update(updates)
+      .eq("id", subscriptionId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("구독 업데이트 오류:", error);
+      console.error("구독 ID:", subscriptionId);
+      console.error("업데이트 데이터:", updates);
+      return null;
+    }
+
+    console.log("구독 업데이트 성공:", data);
+    return data;
+  },
+
+  // 사용자 ID로 구독 업데이트
+  async updateSubscriptionByUserId(
     userId: number,
     updates: Partial<Subscription>
   ): Promise<Subscription | null> {
@@ -833,7 +863,7 @@ export const subscriptionService = {
       .single();
 
     if (error) {
-      console.error("구독 업데이트 오류:", error);
+      console.error("사용자 ID로 구독 업데이트 오류:", error);
       return null;
     }
     return data;
@@ -882,6 +912,8 @@ export const subscriptionService = {
     userId: string | number,
     userEmail?: string
   ): Promise<Subscription | null> {
+    console.log("활성 구독 조회 시도:", { userId, userEmail });
+
     // NextAuth에서 오는 큰 숫자 ID를 처리
     const idString = userId.toString();
     const id = parseInt(idString);
@@ -899,20 +931,52 @@ export const subscriptionService = {
         return null;
       }
       actualUserId = user.id;
+      console.log("이메일로 사용자 조회 성공:", actualUserId);
     }
 
-    const { data, error } = await supabase
+    console.log("실제 사용자 ID로 구독 조회:", actualUserId);
+
+    // 먼저 active 상태의 구독을 찾음
+    const { data, error: queryError } = await supabase
       .from("subscriptions")
       .select("*")
       .eq("user_id", actualUserId)
       .eq("status", "active")
-      .single();
+      .order("created_at", { ascending: false })
+      .limit(1);
 
-    if (error) {
-      console.error("활성 구독 조회 오류:", error);
+    if (queryError) {
+      console.error("활성 구독 조회 오류:", queryError);
+      console.error("조회 조건:", { user_id: actualUserId, status: "active" });
       return null;
     }
-    return data;
+
+    // active 구독이 없으면 최신 구독을 찾음 (상태 무관)
+    if (!data || data.length === 0) {
+      console.log("활성 구독이 없음, 최신 구독 조회 시도");
+      const { data: latestData, error: latestError } = await supabase
+        .from("subscriptions")
+        .select("*")
+        .eq("user_id", actualUserId)
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+      if (latestError) {
+        console.error("최신 구독 조회 오류:", latestError);
+        return null;
+      }
+
+      if (latestData && latestData.length > 0) {
+        console.log("최신 구독 찾음:", latestData[0]);
+        return latestData[0];
+      } else {
+        console.log("구독을 찾을 수 없음");
+        return null;
+      }
+    } else {
+      console.log("구독 조회 성공:", data[0]);
+      return data[0];
+    }
   },
 };
 
@@ -1262,7 +1326,7 @@ export const dbService = {
       console.log("일기 생성 완료:", diary);
 
       // 2. 경험치 추가
-      const plant = await plantService.addExperienceWithName(
+      const plantResult = await plantService.addExperienceWithName(
         actualUserId,
         2,
         undefined,
@@ -1381,7 +1445,7 @@ export const dbService = {
           newAchievements.push(plantGrowerAchievement);
       }
 
-      return { diary, plant, newAchievements };
+      return { diary, plant: plantResult.plant, newAchievements };
     } catch (error) {
       console.error("일기 작성 처리 오류:", error);
       return { diary: null, plant: null, newAchievements: [] };

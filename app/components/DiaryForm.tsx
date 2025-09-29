@@ -463,12 +463,15 @@ export default function DiaryForm({
       {/* 일기 작성 영역 */}
       <div className="lulu-card p-6">
         {/* 디버깅: todayDiary 상태 확인 */}
-        {console.log(
-          "DiaryForm 렌더링 - todayDiary:",
-          todayDiary,
-          "isEditing:",
-          isEditing
-        )}
+        {(() => {
+          console.log(
+            "DiaryForm 렌더링 - todayDiary:",
+            todayDiary,
+            "isEditing:",
+            isEditing
+          );
+          return null;
+        })()}
         {/* 오늘 작성된 일기가 있는 경우 */}
         {todayDiary && !isEditing ? (
           <div className="space-y-4">

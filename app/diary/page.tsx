@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import DiaryForm from "../components/DiaryForm";
 import DiaryList from "../components/DiaryList";
 import StatsChart from "../components/StatsChart";
@@ -13,9 +13,10 @@ import Header from "../components/Header";
 import AdBanner from "../components/AdBanner";
 import ProfileSetup from "../components/ProfileSetup";
 
-export default function DiaryPage() {
+function DiaryPageContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [diaries, setDiaries] = useState([]);
   const [stats, setStats] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
@@ -24,9 +25,56 @@ export default function DiaryPage() {
   const [subscriptionLoading, setSubscriptionLoading] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [diaryDeletedTrigger, setDiaryDeletedTrigger] = useState(0);
-  const [plantData, setPlantData] = useState(null);
+  const [plantData, setPlantData] = useState<{
+    level: number;
+    experience: number;
+    type: string;
+  } | null>(null);
   const [showProfileSetup, setShowProfileSetup] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
+
+  const fetchDiaries = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `/api/diary?month=${currentMonth}&year=${currentYear}`
+      );
+      const data = await response.json();
+      setDiaries(data.diaries || []);
+    } catch (error) {
+      console.error("일기 목록 조회 오류:", error);
+    }
+  }, [currentMonth, currentYear]);
+
+  const fetchStats = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `/api/stats?month=${currentMonth}&year=${currentYear}`
+      );
+      const data = await response.json();
+      setStats(data);
+    } catch (error) {
+      console.error("통계 조회 오류:", error);
+    }
+  }, [currentMonth, currentYear]);
+
+  const checkSubscription = useCallback(async () => {
+    try {
+      setSubscriptionLoading(true);
+      const response = await fetch("/api/subscription");
+      const data = await response.json();
+      console.log("DiaryPage: 구독 상태 확인:", data);
+      setIsPremium(data.isPremium);
+    } catch (error) {
+      console.error("구독 상태 조회 오류:", error);
+    } finally {
+      setSubscriptionLoading(false);
+    }
+  }, []);
+
+  // 구독 상태 강제 새로고침 (결제 완료 후 호출)
+  const refreshSubscriptionStatus = useCallback(async () => {
+    await checkSubscription();
+  }, [checkSubscription]);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -42,45 +90,25 @@ export default function DiaryPage() {
       checkSubscription();
       fetchPlantData();
     }
-  }, [session, currentMonth, currentYear]);
+  }, [
+    session,
+    currentMonth,
+    currentYear,
+    fetchDiaries,
+    fetchStats,
+    checkSubscription,
+  ]);
 
-  const fetchDiaries = async () => {
-    try {
-      const response = await fetch(
-        `/api/diary?month=${currentMonth}&year=${currentYear}`
-      );
-      const data = await response.json();
-      setDiaries(data.diaries || []);
-    } catch (error) {
-      console.error("일기 목록 조회 오류:", error);
+  // 결제 완료 후 프리미엄 상태 확인
+  useEffect(() => {
+    const isPremiumParam = searchParams.get("premium");
+    if (isPremiumParam === "true") {
+      // 구독 상태 강제 새로고침
+      refreshSubscriptionStatus();
+      // URL에서 파라미터 제거
+      router.replace("/diary");
     }
-  };
-
-  const fetchStats = async () => {
-    try {
-      const response = await fetch(
-        `/api/stats?month=${currentMonth}&year=${currentYear}`
-      );
-      const data = await response.json();
-      setStats(data);
-    } catch (error) {
-      console.error("통계 조회 오류:", error);
-    }
-  };
-
-  const checkSubscription = async () => {
-    try {
-      setSubscriptionLoading(true);
-      const response = await fetch("/api/subscription");
-      const data = await response.json();
-      console.log("DiaryPage: 구독 상태 확인:", data);
-      setIsPremium(data.isPremium);
-    } catch (error) {
-      console.error("구독 상태 조회 오류:", error);
-    } finally {
-      setSubscriptionLoading(false);
-    }
-  };
+  }, [searchParams, router, refreshSubscriptionStatus]);
 
   // 일기 추가 후 모든 데이터 새로고침
   const handleDiaryAdded = async () => {
@@ -172,7 +200,7 @@ export default function DiaryPage() {
               onDiaryAdded={handleDiaryAdded}
               onDiaryDeleted={diaryDeletedTrigger}
               isPremium={isPremium}
-              plantData={plantData}
+              plantData={plantData || undefined}
             />
           </div>
 
@@ -209,5 +237,22 @@ export default function DiaryPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function DiaryPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+            <p className="text-gray-600">로딩 중...</p>
+          </div>
+        </div>
+      }
+    >
+      <DiaryPageContent />
+    </Suspense>
   );
 }

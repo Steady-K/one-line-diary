@@ -19,10 +19,13 @@ export async function POST(request: NextRequest) {
     // 최신 구독 상태 조회
     const subscription = await subscriptionService.getActiveSubscription(
       session.user.id,
-      session.user.email
+      session.user.email || undefined
     );
 
+    console.log("구독 조회 결과:", subscription);
+
     if (!subscription) {
+      console.log("구독이 없음, 기본값 반환");
       return NextResponse.json({
         isPremium: false,
         planType: "free",

@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     // 사용자 프로필 조회
     const profile = await userService.getUserProfile(
       session.user.id,
-      session.user.email
+      session.user.email || undefined
     );
 
     return NextResponse.json({ profile });
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     // 프로필 생성
     const profile = await userService.createUserProfile(
       session.user.id,
-      session.user.email,
+      session.user.email || "",
       {
         nickname,
         gender,
@@ -68,7 +68,7 @@ export async function PUT(request: NextRequest) {
     // 프로필 수정
     const profile = await userService.updateUserProfile(
       session.user.id,
-      session.user.email,
+      session.user.email || "",
       {
         nickname,
         gender,

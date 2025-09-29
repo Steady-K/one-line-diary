@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     const existingSubscription =
       await subscriptionService.getActiveSubscription(
         session.user.id,
-        session.user.email
+        session.user.email || undefined
       );
 
     if (existingSubscription) {
@@ -29,12 +29,13 @@ export async function POST(request: NextRequest) {
 
     // 새 구독 생성
     const subscription = await subscriptionService.createSubscription({
-      user_id: session.user.id,
+      user_id: parseInt(session.user.id),
       plan_type: "premium",
       status: "active",
+      start_date: new Date().toISOString(),
       toss_order_id: `force_${Date.now()}`,
       toss_payment_key: `force_${Date.now()}`,
-      end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30일 후
+      end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30일 후
     });
 
     console.log("강제 구독 생성 완료:", subscription);

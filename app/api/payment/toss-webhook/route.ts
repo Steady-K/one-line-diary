@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { subscriptionService } from "@/lib/supabase";
+import { subscriptionService, userService } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,20 +21,49 @@ export async function POST(request: NextRequest) {
       });
 
       // 사용자 ID 조회 (이메일로)
-      const user = await subscriptionService.getUserByEmail(customerEmail);
+      const user = await userService.getUserByEmail(customerEmail);
 
       if (user) {
-        // 구독 생성
-        const subscription = await subscriptionService.createSubscription({
-          user_id: user.id,
-          plan_type: "premium",
-          status: "active",
-          toss_order_id: orderId,
-          toss_payment_key: paymentKey,
-          end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30일 후
-        });
+        console.log("사용자 찾음:", user.id, user.email);
 
-        console.log("구독 생성 완료:", subscription);
+        // 기존 구독 확인
+        const existingSubscription =
+          await subscriptionService.getActiveSubscription(user.id, user.email);
+
+        if (existingSubscription) {
+          console.log("기존 구독 업데이트:", existingSubscription.id);
+          // 기존 구독을 프리미엄으로 업데이트
+          const updatedSubscription =
+            await subscriptionService.updateSubscription(
+              existingSubscription.id,
+              {
+                plan_type: "premium",
+                status: "active",
+                toss_order_id: orderId,
+                toss_payment_key: paymentKey,
+                end_date: new Date(
+                  Date.now() + 30 * 24 * 60 * 60 * 1000
+                ).toISOString(), // 30일 후
+              }
+            );
+          console.log("기존 구독 업데이트 완료:", updatedSubscription);
+        } else {
+          console.log("새 구독 생성");
+          // 새 구독 생성
+          const subscription = await subscriptionService.createSubscription({
+            user_id: user.id,
+            plan_type: "premium",
+            status: "active",
+            start_date: new Date().toISOString(),
+            toss_order_id: orderId,
+            toss_payment_key: paymentKey,
+            end_date: new Date(
+              Date.now() + 30 * 24 * 60 * 60 * 1000
+            ).toISOString(), // 30일 후
+          });
+
+          console.log("구독 생성 완료:", subscription);
+        }
       } else {
         console.error("사용자를 찾을 수 없습니다:", customerEmail);
       }

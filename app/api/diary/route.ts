@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     }
 
     const userId = parseInt(session.user.id);
-    const userEmail = session.user.email;
+    const userEmail = session.user.email || undefined;
 
     // Supabase를 사용한 통합 일기 작성 처리
     const result = await dbService.processDiaryCreation(
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
     const month = parseInt(searchParams.get("month") || "0");
     const year = parseInt(searchParams.get("year") || "0");
     const userId = parseInt(session.user.id);
-    const userEmail = session.user.email;
+    const userEmail = session.user.email || undefined;
 
     // Supabase를 사용한 일기 목록 조회
     const diaries = await diaryService.getUserDiaries(

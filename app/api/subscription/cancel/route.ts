@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     // 현재 활성 구독 조회
     const subscription = await subscriptionService.getActiveSubscription(
       session.user.id,
-      session.user.email
+      session.user.email || undefined
     );
 
     if (!subscription) {

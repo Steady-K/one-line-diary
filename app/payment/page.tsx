@@ -11,7 +11,7 @@ import Link from "next/link";
 declare global {
   interface Window {
     TossPayments: (clientKey: string) => {
-      requestPayment: (method: string, options: any) => void;
+      requestPayment: (method: string, options: unknown) => void;
     };
   }
 }
@@ -23,7 +23,10 @@ export default function PaymentPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [subscription, setSubscription] = useState(null);
+  const [subscription, setSubscription] = useState<{
+    isPremium: boolean;
+    planType: string;
+  } | null>(null);
 
   useEffect(() => {
     if (status === "unauthenticated") {

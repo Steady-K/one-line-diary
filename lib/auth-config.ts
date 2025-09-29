@@ -1,4 +1,22 @@
 import { NextAuthOptions } from "next-auth";
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  }
+
+  interface User {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  }
+}
 // import { PrismaAdapter } from "@auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -79,7 +97,7 @@ export const authOptions: NextAuthOptions = {
           // Supabase에 사용자 초기화 (식물, 구독 생성 포함)
           const result = await dbService.initializeNewUser({
             email: user.email!,
-            name: user.name,
+            name: user.name || undefined,
             provider: account?.provider || "credentials",
             provider_id: account?.providerAccountId,
           });
@@ -99,6 +117,5 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/auth/signin",
-    signUp: "/auth/signup",
   },
 };

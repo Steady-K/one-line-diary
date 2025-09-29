@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     // 사용자의 식물 정보 조회 또는 생성
     const plant = await plantService.getOrCreateUserPlant(
       session.user.id,
-      session.user.email
+      session.user.email || undefined
     );
 
     return NextResponse.json({ plant });
@@ -36,11 +36,11 @@ export async function POST(request: NextRequest) {
     const { experience, name } = await request.json();
 
     // 식물 경험치 추가 및 업데이트
-    const result = await plantService.addExperience(
+    const result = await plantService.addExperienceWithName(
       session.user.id,
       experience || 1,
       name,
-      session.user.email
+      session.user.email || undefined
     );
 
     return NextResponse.json({

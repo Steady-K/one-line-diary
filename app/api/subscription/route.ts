@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
     const subscription = await subscriptionService.getActiveSubscription(
       session.user.id,
-      session.user.email
+      session.user.email || undefined
     );
 
     if (!subscription) {
