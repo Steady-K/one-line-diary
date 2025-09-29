@@ -160,9 +160,9 @@ export default function LalaCharacter({
 
       {/* 클릭 시 나타나는 메시지 */}
       {showMessage && (
-        <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 z-20">
-          <div className="bg-white rounded-lg p-4 shadow-xl border-2 border-purple-200 max-w-xs min-w-48">
-            <p className="text-sm text-gray-800 text-center font-medium leading-relaxed">
+        <div className="absolute -top-32 sm:-top-24 left-1/2 transform -translate-x-1/2 z-20 px-4">
+          <div className="bg-white rounded-lg p-3 sm:p-4 shadow-xl border-2 border-purple-200 w-64 sm:w-72 max-w-[calc(100vw-2rem)]">
+            <p className="text-xs sm:text-sm text-gray-800 text-center font-medium leading-relaxed break-words">
               {lala.message}
             </p>
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
