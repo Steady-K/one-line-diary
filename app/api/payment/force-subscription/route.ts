@@ -1,0 +1,53 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth-config";
+import { subscriptionService } from "@/lib/supabase";
+
+export async function POST(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    console.log("강제 구독 생성 요청:", session.user.id, session.user.email);
+
+    // 기존 구독 삭제
+    const existingSubscription =
+      await subscriptionService.getActiveSubscription(
+        session.user.id,
+        session.user.email
+      );
+
+    if (existingSubscription) {
+      console.log("기존 구독 삭제:", existingSubscription.id);
+      // 기존 구독을 비활성화
+      await subscriptionService.updateSubscription(existingSubscription.id, {
+        status: "cancelled",
+      });
+    }
+
+    // 새 구독 생성
+    const subscription = await subscriptionService.createSubscription({
+      user_id: session.user.id,
+      plan_type: "premium",
+      status: "active",
+      toss_order_id: `force_${Date.now()}`,
+      toss_payment_key: `force_${Date.now()}`,
+      end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30일 후
+    });
+
+    console.log("강제 구독 생성 완료:", subscription);
+
+    return NextResponse.json({
+      success: true,
+      subscription,
+    });
+  } catch (error) {
+    console.error("강제 구독 생성 오류:", error);
+    return NextResponse.json(
+      { error: "Failed to create subscription" },
+      { status: 500 }
+    );
+  }
+}

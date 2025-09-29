@@ -1,0 +1,435 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* 커스텀 스타일 추가 */
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* 라라 캐릭터 애니메이션 */
+@keyframes gentle-sway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(2deg);
+  }
+  75% {
+    transform: rotate(-2deg);
+  }
+}
+
+@keyframes heart-beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes sleepy-sway {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-2px) rotate(1deg);
+  }
+}
+
+@keyframes thoughtful-nod {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes cool-pose {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(5deg) scale(1.05);
+  }
+}
+
+@keyframes warm-hug {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes embarrassed-wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(3deg);
+  }
+  75% {
+    transform: rotate(-3deg);
+  }
+}
+
+@keyframes frustrated-shake {
+  0%,
+  100% {
+    transform: translateX(0px);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0px);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* 라라 캐릭터 애니메이션 클래스 */
+.lala-gentle-sway {
+  animation: gentle-sway 2s ease-in-out infinite;
+}
+
+.lala-heart-beat {
+  animation: heart-beat 1.5s ease-in-out infinite;
+}
+
+.lala-sleepy-sway {
+  animation: sleepy-sway 3s ease-in-out infinite;
+}
+
+.lala-thoughtful-nod {
+  animation: thoughtful-nod 2s ease-in-out infinite;
+}
+
+.lala-cool-pose {
+  animation: cool-pose 2.5s ease-in-out infinite;
+}
+
+.lala-warm-hug {
+  animation: warm-hug 2s ease-in-out infinite;
+}
+
+.lala-embarrassed-wiggle {
+  animation: embarrassed-wiggle 1s ease-in-out infinite;
+}
+
+.lala-frustrated-shake {
+  animation: frustrated-shake 0.5s ease-in-out infinite;
+}
+
+.lala-shake {
+  animation: shake 0.5s ease-in-out infinite;
+}
+
+.lala-bounce {
+  animation: bounce 1s ease-in-out infinite;
+}
+
+.card-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* 애니메이션 */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 스크롤바 스타일링 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 반응형 텍스트 */
+@media (max-width: 640px) {
+  .responsive-text {
+    font-size: 0.875rem;
+  }
+}
+
+/* 버튼 호버 효과 */
+.btn-hover {
+  transition: all 0.3s ease;
+}
+
+.btn-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 루루 캐릭터 전용 애니메이션 */
+@keyframes gentle-sway {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+@keyframes heart-beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes sleepy-sway {
+  0%,
+  100% {
+    transform: translateX(-2px) rotate(-1deg);
+  }
+  50% {
+    transform: translateX(2px) rotate(1deg);
+  }
+}
+
+@keyframes thoughtful-nod {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes cool-pose {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(5deg) scale(1.05);
+  }
+}
+
+@keyframes warm-hug {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes embarrassed-wiggle {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes frustrated-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-3px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+/* 루루 캐릭터 클래스 */
+.lulu-gentle-sway {
+  animation: gentle-sway 2s ease-in-out infinite;
+}
+.lulu-heart-beat {
+  animation: heart-beat 1.5s ease-in-out infinite;
+}
+.lulu-sleepy-sway {
+  animation: sleepy-sway 3s ease-in-out infinite;
+}
+.lulu-thoughtful-nod {
+  animation: thoughtful-nod 2s ease-in-out infinite;
+}
+.lulu-cool-pose {
+  animation: cool-pose 2.5s ease-in-out infinite;
+}
+.lulu-warm-hug {
+  animation: warm-hug 1.8s ease-in-out infinite;
+}
+.lulu-embarrassed-wiggle {
+  animation: embarrassed-wiggle 1s ease-in-out infinite;
+}
+.lulu-frustrated-shake {
+  animation: frustrated-shake 0.5s ease-in-out infinite;
+}
+
+/* 루루 테마 색상 */
+:root {
+  --lulu-primary: #ffd93d;
+  --lulu-secondary: #ff6b6b;
+  --lulu-background: #f8f9fa;
+  --lulu-text: #2c3e50;
+  --lulu-accent: #6bc5d8;
+  --lulu-sunny: #ffd93d;
+  --lulu-rainy: #6bc5d8;
+  --lulu-fiery: #ff6b6b;
+  --lulu-romantic: #ff69b4;
+  --lulu-dreamy: #9b59b6;
+  --lulu-contemplative: #95a5a6;
+  --lulu-cool: #3498db;
+  --lulu-warm: #e91e63;
+  --lulu-embarrassed: #ff9800;
+  --lulu-angry: #e74c3c;
+}
+
+/* 루루 테마 버튼 */
+.lulu-btn {
+  background: linear-gradient(
+    135deg,
+    var(--lulu-primary),
+    var(--lulu-secondary)
+  );
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 217, 61, 0.3);
+}
+
+.lulu-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 217, 61, 0.4);
+}
+
+/* 루루 테마 카드 */
+.lulu-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(248, 249, 250, 0.9)
+  );
+  border: 2px solid rgba(255, 217, 61, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(255, 217, 61, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* 루루 테마 입력 필드 */
+.lulu-input {
+  border: 2px solid rgba(255, 217, 61, 0.3);
+  border-radius: 12px;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.lulu-input:focus {
+  border-color: var(--lulu-primary);
+  box-shadow: 0 0 0 3px rgba(255, 217, 61, 0.2);
+  outline: none;
+}

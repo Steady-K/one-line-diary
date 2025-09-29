@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  passwordHash      String?  @map("password_hash") // 소셜 로그인 사용자는 null 가능
+  name              String?
+  emailVerified     Boolean  @default(false) @map("email_verified")
+  verificationToken String?  @map("verification_token")
+  provider          String?  // 'credentials', 'google', 'kakao' 등
+  providerId        String?  @map("provider_id") // 소셜 로그인 제공자의 사용자 ID
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  
+  // 관계
+  diaries           Diary[]
+  subscription      Subscription?
+  plant             Plant?
+  achievements      Achievement[]
+  
+  @@map("users")
+}
+
+model Diary {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("user_id")
+  content     String   // 한줄 일기 내용
+  emotion     String   // 감정 태그 (😊😢😠😍😴)
+  weather     String?  // 날씨 (🌞🌧️⛅)
+  mood        Int      @default(5) // 기분 점수 (1-10)
+  isPrivate   Boolean  @default(true) @map("is_private") // 공개 여부
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  // 관계
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("diaries")
+}
+
+model Subscription {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique @map("user_id")
+  planType    String   @map("plan_type") // 'free', 'premium'
+  status      String   @default("active") // 'active', 'cancelled', 'expired'
+  startDate   DateTime @default(now()) @map("start_date")
+  endDate     DateTime? @map("end_date")
+  stripeCustomerId String? @map("stripe_customer_id")
+  stripeSubscriptionId String? @map("stripe_subscription_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  // 관계
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("subscriptions")
+}
+
+model Plant {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique @map("user_id")
+  type        String   @default("seedling") // seedling, sprout, young, mature, flowering, fruiting
+  level       Int      @default(1)
+  experience  Int      @default(0) // 일기 작성으로 얻는 경험치
+  name        String?  // 사용자가 지은 식물 이름
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  // 관계
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("plants")
+}
+
+model Achievement {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("user_id")
+  type        String   // first_diary, week_streak, month_streak, emotion_master, etc.
+  title       String
+  description String
+  icon        String   // 이모지 또는 아이콘
+  unlockedAt  DateTime @default(now()) @map("unlocked_at")
+  
+  // 관계
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, type])
+  @@map("achievements")
+}
