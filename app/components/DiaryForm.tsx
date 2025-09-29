@@ -331,9 +331,11 @@ export default function DiaryForm({
   if (isCheckingToday) {
     return (
       <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-        <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
-          <div className="h-32 bg-gray-200 rounded"></div>
+        <div className="flex items-center justify-center h-32">
+          <div className="flex items-center space-x-2 text-gray-500">
+            <div className="w-5 h-5 border-2 border-gray-300 border-t-purple-500 rounded-full animate-spin"></div>
+            <span>오늘의 일기를 확인하는 중...</span>
+          </div>
         </div>
       </div>
     );
