@@ -118,9 +118,7 @@ export default function RootLayout({
         <AuthProvider>
           <ThemeInitializer />
           <div className="min-h-screen theme-background flex flex-col">
-            <main className="flex-1">
-              {children}
-            </main>
+            <main className="flex-1">{children}</main>
             <Footer />
           </div>
         </AuthProvider>
