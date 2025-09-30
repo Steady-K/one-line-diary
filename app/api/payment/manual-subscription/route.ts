@@ -50,8 +50,8 @@ export async function POST(request: NextRequest) {
         {
           plan_type: "premium",
           status: "active",
-          toss_order_id: orderId,
-          toss_payment_key: paymentKey,
+          imp_uid: orderId,
+          imp_merchant_uid: paymentKey,
           end_date: new Date(
             Date.now() + 30 * 24 * 60 * 60 * 1000
           ).toISOString(),
@@ -90,8 +90,8 @@ export async function POST(request: NextRequest) {
       plan_type: "premium",
       status: "active",
       start_date: new Date().toISOString(),
-      toss_order_id: orderId,
-      toss_payment_key: paymentKey,
+      imp_uid: orderId,
+      imp_merchant_uid: paymentKey,
       end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30일 후
     });
 
