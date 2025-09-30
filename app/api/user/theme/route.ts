@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../../lib/auth-config";
-import { userService } from "../../../lib/supabase";
+import { authOptions } from "@/lib/auth-config";
+import { userService } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   try {
