@@ -26,6 +26,14 @@ export async function GET(request: NextRequest) {
       session.user.email || undefined
     );
 
+    console.log("통계 API 응답:", {
+      userId: session.user.id,
+      month,
+      year,
+      totalEntries: stats.totalEntries,
+      monthEntries: stats.monthEntries,
+    });
+
     return NextResponse.json(stats);
   } catch (error) {
     console.error("통계 조회 오류:", error);
