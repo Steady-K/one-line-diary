@@ -398,6 +398,57 @@ export default function MyPage() {
               </Link>
             </div>
           </div>
+
+          {/* 서비스 정책 */}
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              서비스 정책
+            </h2>
+            
+            <div className="space-y-4">
+              {/* 서비스 제공기간 */}
+              <div>
+                <h3 className="font-semibold text-gray-700 mb-2">📅 서비스 제공기간</h3>
+                <div className="text-sm text-gray-600 space-y-1">
+                  <p>• 월간 구독: 구독 시작일로부터 30일간</p>
+                  <p>• 영구 구독: 구독 시작일로부터 무제한</p>
+                  <p>• 구독 연장 시 자동 갱신</p>
+                </div>
+              </div>
+
+              {/* 환불 정책 */}
+              <div>
+                <h3 className="font-semibold text-gray-700 mb-2">💰 환불 정책</h3>
+                <div className="text-sm text-gray-600 space-y-1">
+                  <p>• 구독 후 3일 이내: 전액 환불 가능</p>
+                  <p>• 3일 이후: 환불 불가</p>
+                  <p>• 환불 요청: 마이페이지 → 구독 관리에서 가능</p>
+                </div>
+              </div>
+
+              {/* 취소 규정 */}
+              <div>
+                <h3 className="font-semibold text-gray-700 mb-2">❌ 취소 규정</h3>
+                <div className="text-sm text-gray-600 space-y-1">
+                  <p>• 구독 취소: 언제든지 가능</p>
+                  <p>• 취소 시: 다음 결제일부터 서비스 중단</p>
+                  <p>• 이미 결제된 기간: 환불 정책에 따라 처리</p>
+                  <p>• 취소 방법: 마이페이지 → 구독 취소하기</p>
+                </div>
+              </div>
+
+              {/* 교환 정책 */}
+              <div>
+                <h3 className="font-semibold text-gray-700 mb-2">🔄 교환 정책</h3>
+                <div className="text-sm text-gray-600 space-y-1">
+                  <p>• 디지털 서비스로 교환 불가</p>
+                  <p>• 플랜 변경: 언제든지 가능</p>
+                  <p>• 월간 → 영구: 차액 결제 후 업그레이드</p>
+                  <p>• 영구 → 월간: 환불 후 재구독</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
