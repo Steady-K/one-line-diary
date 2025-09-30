@@ -34,14 +34,20 @@ export async function POST(request: NextRequest) {
     const verificationData = await verificationResponse.json();
     console.log("아임포트 결제 검증 결과:", verificationData);
 
-    // 결제 금액 검증
-    if (verificationData.response.amount !== amount) {
+    // 결제 금액 검증 (영구 프리미엄 14900원 또는 월간 프리미엄 1900원)
+    const validAmounts = [1900, 14900];
+    if (!validAmounts.includes(verificationData.response.amount)) {
       console.error("결제 금액 불일치:", {
         expected: amount,
         actual: verificationData.response.amount,
+        validAmounts: validAmounts,
       });
       return NextResponse.json({ success: false, message: "결제 금액 불일치" });
     }
+
+    // 영구 프리미엄 여부 확인
+    const isLifetime = verificationData.response.amount === 14900;
+    const planType = isLifetime ? "lifetime_premium" : "premium";
 
     // 사용자 ID 조회 (이메일로)
     const user = await userService.getUserByEmail(buyer_email);
@@ -60,30 +66,32 @@ export async function POST(request: NextRequest) {
     if (existingSubscription) {
       console.log("기존 구독 업데이트:", existingSubscription.id);
       // 기존 구독을 프리미엄으로 업데이트
-      const updatedSubscription =
-        await subscriptionService.updateSubscription(existingSubscription.id, {
-          plan_type: "premium",
+      const updatedSubscription = await subscriptionService.updateSubscription(
+        existingSubscription.id,
+        {
+          plan_type: planType,
           status: "active",
           imp_uid: imp_uid,
           imp_merchant_uid: merchant_uid,
-          end_date: new Date(
-            Date.now() + 30 * 24 * 60 * 60 * 1000
-          ).toISOString(), // 30일 후
-        });
+          end_date: isLifetime
+            ? null // 영구 프리미엄은 종료일 없음
+            : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30일 후
+        }
+      );
       console.log("기존 구독 업데이트 완료:", updatedSubscription);
     } else {
       console.log("새 구독 생성");
       // 새 구독 생성
       const subscription = await subscriptionService.createSubscription({
         user_id: user.id,
-        plan_type: "premium",
+        plan_type: planType,
         status: "active",
         start_date: new Date().toISOString(),
         imp_uid: imp_uid,
         imp_merchant_uid: merchant_uid,
-        end_date: new Date(
-          Date.now() + 30 * 24 * 60 * 60 * 1000
-        ).toISOString(), // 30일 후
+        end_date: isLifetime
+          ? null // 영구 프리미엄은 종료일 없음
+          : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30일 후
       });
 
       console.log("구독 생성 완료:", subscription);

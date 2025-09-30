@@ -24,7 +24,9 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      isPremium: subscription.plan_type === "premium",
+      isPremium:
+        subscription.plan_type === "premium" ||
+        subscription.plan_type === "lifetime_premium",
       planType: subscription.plan_type,
       status: subscription.status,
       startDate: subscription.start_date,

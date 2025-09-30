@@ -49,14 +49,14 @@ export default function StatsChart({ stats, isPremium }: StatsChartProps) {
   // 감정별 이미지 매핑
   const emotionImages: Record<string, string> = {
     "😊": "/characters/lala-happy.png",
-    "😍": "/characters/lala-loving.png",
+    "😠": "/characters/lala-angry.png",
     "😢": "/characters/lala-sad.png",
     "😴": "/characters/lala-sleepy.png",
     "😮": "/characters/lala-surprised.png",
-    "😤": "/characters/lala-angry.png",
-    "😎": "/characters/lala-cool.png",
     "🤔": "/characters/lala-thinking.png",
-    "😳": "/characters/lala-embarrassed.png",
+    "😍": "/characters/lala-loving.png",
+    "😎": "/characters/lala-cool.png",
+    "😅": "/characters/lala-embarrassed.png",
   };
 
   // 감정 통계 데이터 변환 (안전하게)

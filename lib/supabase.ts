@@ -951,28 +951,10 @@ export const subscriptionService = {
       return null;
     }
 
-    // active 구독이 없으면 최신 구독을 찾음 (상태 무관)
+    // active 구독이 없으면 null 반환 (취소된 구독은 반환하지 않음)
     if (!data || data.length === 0) {
-      console.log("활성 구독이 없음, 최신 구독 조회 시도");
-      const { data: latestData, error: latestError } = await supabase
-        .from("subscriptions")
-        .select("*")
-        .eq("user_id", actualUserId)
-        .order("created_at", { ascending: false })
-        .limit(1);
-
-      if (latestError) {
-        console.error("최신 구독 조회 오류:", latestError);
-        return null;
-      }
-
-      if (latestData && latestData.length > 0) {
-        console.log("최신 구독 찾음:", latestData[0]);
-        return latestData[0];
-      } else {
-        console.log("구독을 찾을 수 없음");
-        return null;
-      }
+      console.log("활성 구독이 없음");
+      return null;
     } else {
       console.log("구독 조회 성공:", data[0]);
       return data[0];
