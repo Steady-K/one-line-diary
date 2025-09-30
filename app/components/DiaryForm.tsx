@@ -344,7 +344,7 @@ export default function DiaryForm({
   return (
     <div className="mb-8">
       {/* 라라 캐릭터 영역 */}
-      <div className="lulu-card p-4 mb-6">
+      <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-4 mb-6">
         <div className="flex flex-col items-center mb-4">
           <h3 className="text-xl font-bold text-gray-800 mb-2 flex items-center">
             <img
