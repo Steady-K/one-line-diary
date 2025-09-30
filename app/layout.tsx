@@ -22,6 +22,16 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  // 카카오톡 공유를 위한 추가 메타데이터
+  other: {
+    "og:image": "https://only-oneline.vercel.app/thumbnail.png",
+    "og:image:width": "1200",
+    "og:image:height": "630",
+    "og:image:type": "image/png",
+    "og:image:alt": "한줄일기 썸네일 - 일기를 쓰는 귀여운 캐릭터",
+    "twitter:image": "https://only-oneline.vercel.app/thumbnail.png",
+    "twitter:image:alt": "한줄일기 썸네일 - 일기를 쓰는 귀여운 캐릭터",
+  },
   openGraph: {
     title: "한줄일기 - 매일 한 줄로 기록하는 특별한 일기",
     description:
@@ -30,7 +40,7 @@ export const metadata: Metadata = {
     siteName: "한줄일기",
     images: [
       {
-        url: "/thumbnail.png",
+        url: "https://only-oneline.vercel.app/thumbnail.png",
         width: 1200,
         height: 630,
         alt: "한줄일기 썸네일 - 일기를 쓰는 귀여운 캐릭터",
@@ -44,7 +54,7 @@ export const metadata: Metadata = {
     title: "한줄일기 - 매일 한 줄로 기록하는 특별한 일기",
     description:
       "라라와 함께 매일 한 줄로 기록하는 특별한 일기. 감정을 표현하고 성장을 기록해보세요.",
-    images: ["/thumbnail.png"],
+    images: ["https://only-oneline.vercel.app/thumbnail.png"],
   },
   robots: {
     index: true,
@@ -59,12 +69,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon.png", sizes: "16x16", type: "image/png" },
+      { url: "https://only-oneline.vercel.app/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "https://only-oneline.vercel.app/favicon.png", sizes: "16x16", type: "image/png" },
     ],
     apple: [
       {
-        url: "/favicon.png",
+        url: "https://only-oneline.vercel.app/favicon.png",
         sizes: "180x180",
         type: "image/png",
       },
@@ -72,7 +82,7 @@ export const metadata: Metadata = {
     other: [
       {
         rel: "mask-icon",
-        url: "/favicon.png",
+        url: "https://only-oneline.vercel.app/favicon.png",
         color: "#8B5CF6",
       },
     ],
