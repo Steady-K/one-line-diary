@@ -657,7 +657,7 @@ export default function DiaryForm({
               <button
                 type="submit"
                 disabled={isLoading || !content.trim()}
-                className="lulu-btn flex-1 py-3 text-lg font-bold cursor-pointer disabled:cursor-not-allowed"
+                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white flex-1 py-3 text-lg font-bold cursor-pointer disabled:cursor-not-allowed rounded-lg transition-all duration-200 disabled:opacity-50"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center">
