@@ -116,7 +116,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <ThemeInitializer />
-          <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
+          <div className="min-h-screen theme-background">
             {children}
           </div>
         </AuthProvider>

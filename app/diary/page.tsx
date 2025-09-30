@@ -182,7 +182,7 @@ function DiaryPageContent() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen theme-background">
       <Header isPremium={isPremium} />
 
       <div className="container mx-auto px-4 py-8">

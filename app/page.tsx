@@ -11,7 +11,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-yellow-50 to-orange-100">
+    <div className="min-h-screen flex items-center justify-center px-4 theme-background">
       <div className="max-w-md w-full text-center">
         {/* 로고 */}
         <div className="mb-8">

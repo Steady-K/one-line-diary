@@ -314,31 +314,99 @@ body {
 
 /* 테마 적용된 요소들 */
 .theme-primary {
-  background-color: var(--theme-primary);
+  background-color: var(--theme-primary) !important;
 }
 
 .theme-secondary {
-  background-color: var(--theme-secondary);
+  background-color: var(--theme-secondary) !important;
 }
 
 .theme-background {
-  background-color: var(--theme-background);
+  background-color: var(--theme-background) !important;
 }
 
 .theme-surface {
-  background-color: var(--theme-surface);
+  background-color: var(--theme-surface) !important;
 }
 
 .theme-text {
-  color: var(--theme-text);
+  color: var(--theme-text) !important;
 }
 
 .theme-accent {
-  background-color: var(--theme-accent);
+  background-color: var(--theme-accent) !important;
 }
 
 .theme-gradient {
-  background: linear-gradient(to right, var(--theme-primary), var(--theme-secondary));
+  background: linear-gradient(to right, var(--theme-primary), var(--theme-secondary)) !important;
+}
+
+/* 테마별 배경 그라데이션 */
+.theme-default {
+  background: linear-gradient(135deg, #F9FAFB 0%, #F3E8FF 100%) !important;
+}
+
+.theme-spring {
+  background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%) !important;
+}
+
+.theme-summer {
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%) !important;
+}
+
+.theme-autumn {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%) !important;
+}
+
+.theme-winter {
+  background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%) !important;
+}
+
+/* 테마별 카드 배경 */
+.theme-default .bg-white {
+  background-color: #FFFFFF !important;
+  border: 1px solid #F3F4F6 !important;
+}
+
+.theme-spring .bg-white {
+  background-color: #FFFFFF !important;
+  border: 1px solid #D1FAE5 !important;
+}
+
+.theme-summer .bg-white {
+  background-color: #FFFFFF !important;
+  border: 1px solid #DBEAFE !important;
+}
+
+.theme-autumn .bg-white {
+  background-color: #FFFFFF !important;
+  border: 1px solid #FEF3C7 !important;
+}
+
+.theme-winter .bg-white {
+  background-color: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+/* 테마별 버튼 색상 */
+.theme-default .bg-gradient-to-r.from-purple-500.to-pink-500 {
+  background: linear-gradient(to right, #8B5CF6, #EC4899) !important;
+}
+
+.theme-spring .bg-gradient-to-r.from-purple-500.to-pink-500 {
+  background: linear-gradient(to right, #10B981, #F59E0B) !important;
+}
+
+.theme-summer .bg-gradient-to-r.from-purple-500.to-pink-500 {
+  background: linear-gradient(to right, #3B82F6, #F59E0B) !important;
+}
+
+.theme-autumn .bg-gradient-to-r.from-purple-500.to-pink-500 {
+  background: linear-gradient(to right, #F59E0B, #EF4444) !important;
+}
+
+.theme-winter .bg-gradient-to-r.from-purple-500.to-pink-500 {
+  background: linear-gradient(to right, #6366F1, #8B5CF6) !important;
 }
 
 /* 테마별 버튼 스타일 */
