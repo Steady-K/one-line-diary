@@ -30,10 +30,10 @@ export const metadata: Metadata = {
     siteName: "한줄일기",
     images: [
       {
-        url: "/characters/lala-happy.png",
+        url: "/thumbnail.png",
         width: 1200,
         height: 630,
-        alt: "행복한 라라 - 한줄일기",
+        alt: "한줄일기 썸네일 - 일기를 쓰는 귀여운 캐릭터",
       },
     ],
     locale: "ko_KR",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     title: "한줄일기 - 매일 한 줄로 기록하는 특별한 일기",
     description:
       "라라와 함께 매일 한 줄로 기록하는 특별한 일기. 감정을 표현하고 성장을 기록해보세요.",
-    images: ["/characters/lala-happy.png"],
+    images: ["/thumbnail.png"],
   },
   robots: {
     index: true,
@@ -59,12 +59,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/characters/lala-happy.png", sizes: "32x32", type: "image/png" },
-      { url: "/characters/lala-happy.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.png", sizes: "16x16", type: "image/png" },
     ],
     apple: [
       {
-        url: "/characters/lala-happy.png",
+        url: "/favicon.png",
         sizes: "180x180",
         type: "image/png",
       },
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     other: [
       {
         rel: "mask-icon",
-        url: "/characters/lala-happy.png",
+        url: "/favicon.png",
         color: "#8B5CF6",
       },
     ],
