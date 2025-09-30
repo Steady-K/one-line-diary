@@ -432,13 +432,21 @@ export default function MyPage() {
                     🏢 사업자 정보
                   </h3>
                   <div className="text-sm text-gray-600 space-y-1">
-                    <p><strong>상호명:</strong> 원라인(Only Oneline)</p>
-                    <p><strong>사업자등록번호:</strong> 123-45-67890</p>
-                    <p><strong>대표자명:</strong> 김재환</p>
-                    <p><strong>연락처:</strong> 010-1234-5678</p>
-                    <p><strong>사업장주소:</strong> 서울특별시 강남구 테헤란로 123</p>
-                    <p><strong>통신판매신고번호:</strong> 제2024-서울강남-1234호</p>
-                    <p><strong>간이과세자:</strong> 간이과세자</p>
+                    <p>
+                      <strong>상호명:</strong> 한줄일기
+                    </p>
+                    <p>
+                      <strong>사업자등록번호:</strong> 123-45-67890
+                    </p>
+                    <p>
+                      <strong>대표자명:</strong> 김재환
+                    </p>
+                    <p>
+                      <strong>사업장주소:</strong> 백범로 124번길
+                    </p>
+                    <p>
+                      <strong>간이과세자:</strong> 간이과세자
+                    </p>
                   </div>
                 </div>
 
