@@ -24,12 +24,14 @@ export const metadata: Metadata = {
   },
   // 카카오톡 공유를 위한 추가 메타데이터
   other: {
-    "og:image": "/thumbnail.png",
+    "og:image": "https://one-line-diary-7ztrc4x97-kimjaehwans-projects-0e66ef8d.vercel.app/thumbnail.png",
+    "og:image:url": "https://one-line-diary-7ztrc4x97-kimjaehwans-projects-0e66ef8d.vercel.app/thumbnail.png",
     "og:image:width": "1200",
     "og:image:height": "630",
     "og:image:type": "image/png",
     "og:image:alt": "한줄일기 썸네일 - 일기를 쓰는 귀여운 캐릭터",
-    "twitter:image": "/thumbnail.png",
+    "og:image:secure_url": "https://one-line-diary-7ztrc4x97-kimjaehwans-projects-0e66ef8d.vercel.app/thumbnail.png",
+    "twitter:image": "https://one-line-diary-7ztrc4x97-kimjaehwans-projects-0e66ef8d.vercel.app/thumbnail.png",
     "twitter:image:alt": "한줄일기 썸네일 - 일기를 쓰는 귀여운 캐릭터",
   },
   openGraph: {
@@ -40,7 +42,7 @@ export const metadata: Metadata = {
     siteName: "한줄일기",
     images: [
       {
-        url: "/thumbnail.png",
+        url: "https://one-line-diary-7ztrc4x97-kimjaehwans-projects-0e66ef8d.vercel.app/thumbnail.png",
         width: 1200,
         height: 630,
         alt: "한줄일기 썸네일 - 일기를 쓰는 귀여운 캐릭터",
@@ -54,7 +56,7 @@ export const metadata: Metadata = {
     title: "한줄일기 - 매일 한 줄로 기록하는 특별한 일기",
     description:
       "라라와 함께 매일 한 줄로 기록하는 특별한 일기. 감정을 표현하고 성장을 기록해보세요.",
-    images: ["/thumbnail.png"],
+    images: ["https://one-line-diary-7ztrc4x97-kimjaehwans-projects-0e66ef8d.vercel.app/thumbnail.png"],
   },
   robots: {
     index: true,
