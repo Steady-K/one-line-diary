@@ -70,7 +70,7 @@ export default function MyPage() {
         const data = await response.json();
         console.log("마이페이지 구독 상태:", data);
         setIsPremium(data.isPremium);
-        
+
         // 구독 상태에 따른 테마 리셋
         resetThemeIfNotPremium(data.isPremium);
       }
