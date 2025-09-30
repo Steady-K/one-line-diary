@@ -40,7 +40,9 @@ interface PaymentResponse {
   error_msg?: string;
 }
 
-const IMP_CODE = process.env.NEXT_PUBLIC_IMP_CODE || "store-5c051fb2-4e88-40d3-8d70-79185605f777";
+const IMP_CODE =
+  process.env.NEXT_PUBLIC_IMP_CODE ||
+  "store-5c051fb2-4e88-40d3-8d70-79185605f777";
 
 export default function PaymentPage() {
   const { data: session, status } = useSession();
@@ -75,6 +77,21 @@ export default function PaymentPage() {
     );
     console.log("IMP_CODE:", IMP_CODE);
 
+    // 이미 스크립트가 로드되어 있는지 확인
+    const existingScript = document.querySelector(
+      'script[src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"]'
+    );
+
+    if (existingScript) {
+      console.log("아임포트 SDK 이미 로드됨");
+      if (window.IMP) {
+        console.log("아임포트 초기화 시작, 코드:", IMP_CODE);
+        window.IMP.init(IMP_CODE);
+        console.log("아임포트 초기화 완료");
+      }
+      return;
+    }
+
     const script = document.createElement("script");
     script.src = "https://cdn.iamport.kr/js/iamport.payment-1.2.0.js";
     script.onload = () => {
@@ -93,12 +110,12 @@ export default function PaymentPage() {
     document.head.appendChild(script);
 
     return () => {
-      // 컴포넌트 언마운트 시 스크립트 제거
-      const existingScript = document.querySelector(
+      // 컴포넌트 언마운트 시 스크립트 제거 (필요한 경우에만)
+      const scriptToRemove = document.querySelector(
         'script[src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"]'
       );
-      if (existingScript) {
-        existingScript.remove();
+      if (scriptToRemove && scriptToRemove === script) {
+        scriptToRemove.remove();
       }
     };
   }, []);
@@ -187,7 +204,11 @@ export default function PaymentPage() {
         buyer_email: session.user?.email || "", // 구매자 이메일
         buyer_name: session.user?.name || "사용자", // 구매자 이름
         buyer_tel: "010-1234-5678", // 구매자 전화번호 (필수)
+        buyer_addr: "서울시 강남구", // 구매자 주소
+        buyer_postcode: "12345", // 구매자 우편번호
         m_redirect_url: `${window.location.origin}/payment/success`, // 모바일 결제 완료 후 리다이렉트 URL
+        app_scheme: "onlyoneline", // 앱 스킴 (카카오페이용)
+        digital: true, // 디지털 상품 여부
       };
 
       console.log("결제 요청 데이터:", paymentData);
