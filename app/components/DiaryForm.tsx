@@ -463,7 +463,7 @@ export default function DiaryForm({
       </div>
 
       {/* 일기 작성 영역 */}
-      <div className="lulu-card p-6">
+      <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-6">
         {/* 디버깅: todayDiary 상태 확인 */}
         {(() => {
           console.log(
