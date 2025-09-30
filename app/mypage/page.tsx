@@ -426,30 +426,6 @@ export default function MyPage() {
               </div>
 
               <div className="space-y-6">
-                {/* 사업자 정보 */}
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-gray-700 mb-3 flex items-center">
-                    🏢 사업자 정보
-                  </h3>
-                  <div className="text-sm text-gray-600 space-y-1">
-                    <p>
-                      <strong>상호명:</strong> 한줄일기
-                    </p>
-                    <p>
-                      <strong>사업자등록번호:</strong> 123-45-67890
-                    </p>
-                    <p>
-                      <strong>대표자명:</strong> 김재환
-                    </p>
-                    <p>
-                      <strong>사업장주소:</strong> 백범로 124번길
-                    </p>
-                    <p>
-                      <strong>간이과세자:</strong> 간이과세자
-                    </p>
-                  </div>
-                </div>
-
                 {/* 서비스 제공기간 */}
                 <div>
                   <h3 className="text-lg font-semibold text-gray-700 mb-3 flex items-center">
