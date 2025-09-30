@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { themes, Theme, applyTheme, loadTheme } from "@/lib/theme";
+import { themes, Theme, applyTheme, loadTheme, resetThemeIfNotPremium } from "@/lib/theme";
 
 interface ThemeSelectorProps {
   isPremium: boolean;
@@ -15,7 +15,10 @@ export default function ThemeSelector({ isPremium }: ThemeSelectorProps) {
     // 저장된 테마 불러오기
     const savedTheme = loadTheme();
     setSelectedTheme(savedTheme);
-  }, []);
+    
+    // 구독 상태에 따른 테마 리셋
+    resetThemeIfNotPremium(isPremium);
+  }, [isPremium]);
 
   const handleThemeChange = async (theme: Theme) => {
     if (!isPremium) {

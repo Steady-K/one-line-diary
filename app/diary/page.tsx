@@ -12,6 +12,7 @@ import AchievementSystem from "../components/AchievementSystem";
 import Header from "../components/Header";
 import AdBanner from "../components/AdBanner";
 import ProfileSetup from "../components/ProfileSetup";
+import { resetThemeIfNotPremium } from "@/lib/theme";
 
 function DiaryPageContent() {
   const { data: session, status } = useSession();
@@ -64,6 +65,9 @@ function DiaryPageContent() {
       const data = await response.json();
       console.log("DiaryPage: 구독 상태 확인:", data);
       setIsPremium(data.isPremium);
+      
+      // 구독 상태에 따른 테마 리셋
+      resetThemeIfNotPremium(data.isPremium);
     } catch (error) {
       console.error("구독 상태 조회 오류:", error);
     } finally {

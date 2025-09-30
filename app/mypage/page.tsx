@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Header from "../components/Header";
 import Link from "next/link";
 import ThemeSelector from "../components/ThemeSelector";
+import { resetThemeIfNotPremium } from "@/lib/theme";
 
 interface UserProfile {
   id: number;
@@ -69,6 +70,9 @@ export default function MyPage() {
         const data = await response.json();
         console.log("마이페이지 구독 상태:", data);
         setIsPremium(data.isPremium);
+        
+        // 구독 상태에 따른 테마 리셋
+        resetThemeIfNotPremium(data.isPremium);
       }
     } catch (error) {
       console.error("구독 상태 확인 오류:", error);

@@ -128,3 +128,16 @@ export function initializeTheme() {
   const theme = loadTheme();
   applyTheme(theme);
 }
+
+// 구독 상태에 따른 테마 리셋
+export function resetThemeIfNotPremium(isPremium: boolean) {
+  if (typeof window === 'undefined') return;
+  
+  const currentTheme = loadTheme();
+  
+  // 프리미엄이 아니고 기본 테마가 아닌 경우 기본 테마로 리셋
+  if (!isPremium && currentTheme !== 'default') {
+    applyTheme('default');
+    console.log('구독이 만료되어 기본 테마로 변경되었습니다.');
+  }
+}
