@@ -5,6 +5,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     console.log("아임포트 결제 검증 요청:", JSON.stringify(body, null, 2));
+    console.log("IMP_ACCESS_TOKEN 존재 여부:", !!process.env.IMP_ACCESS_TOKEN);
 
     const { imp_uid, merchant_uid, amount, status, buyer_email } = body;
 
@@ -50,6 +51,7 @@ export async function POST(request: NextRequest) {
     const planType = isLifetime ? "lifetime_premium" : "premium";
 
     // 사용자 ID 조회 (이메일로)
+    console.log("사용자 이메일로 조회:", buyer_email);
     const user = await userService.getUserByEmail(buyer_email);
 
     if (!user) {
