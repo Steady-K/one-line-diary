@@ -26,6 +26,7 @@ export default function MyPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isPremium, setIsPremium] = useState(false);
+  const [showPolicyModal, setShowPolicyModal] = useState(false);
 
   const [editForm, setEditForm] = useState({
     nickname: "",
@@ -396,61 +397,97 @@ export default function MyPage() {
               >
                 일기로 돌아가기
               </Link>
+              <button
+                onClick={() => setShowPolicyModal(true)}
+                className="block w-full bg-blue-100 hover:bg-blue-200 text-blue-700 px-6 py-3 rounded-lg transition-colors text-center"
+              >
+                📋 서비스 정책 보기
+              </button>
             </div>
           </div>
 
-          {/* 서비스 정책 */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              서비스 정책
-            </h2>
-            
-            <div className="space-y-4">
-              {/* 서비스 제공기간 */}
-              <div>
-                <h3 className="font-semibold text-gray-700 mb-2">📅 서비스 제공기간</h3>
-                <div className="text-sm text-gray-600 space-y-1">
-                  <p>• 월간 구독: 구독 시작일로부터 30일간</p>
-                  <p>• 영구 구독: 구독 시작일로부터 무제한</p>
-                  <p>• 구독 연장 시 자동 갱신</p>
+        </div>
+      </div>
+
+      {/* 서비스 정책 모달 */}
+      {showPolicyModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-800">서비스 정책</h2>
+                <button
+                  onClick={() => setShowPolicyModal(false)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+                >
+                  ×
+                </button>
+              </div>
+              
+              <div className="space-y-6">
+                {/* 서비스 제공기간 */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-700 mb-3 flex items-center">
+                    📅 서비스 제공기간
+                  </h3>
+                  <div className="text-sm text-gray-600 space-y-2 pl-4">
+                    <p>• 월간 구독: 구독 시작일로부터 30일간</p>
+                    <p>• 영구 구독: 구독 시작일로부터 무제한</p>
+                    <p>• 구독 연장 시 자동 갱신</p>
+                  </div>
+                </div>
+
+                {/* 환불 정책 */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-700 mb-3 flex items-center">
+                    💰 환불 정책
+                  </h3>
+                  <div className="text-sm text-gray-600 space-y-2 pl-4">
+                    <p>• 구독 후 3일 이내: 전액 환불 가능</p>
+                    <p>• 3일 이후: 환불 불가</p>
+                    <p>• 환불 요청: 마이페이지 → 구독 관리에서 가능</p>
+                  </div>
+                </div>
+
+                {/* 취소 규정 */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-700 mb-3 flex items-center">
+                    ❌ 취소 규정
+                  </h3>
+                  <div className="text-sm text-gray-600 space-y-2 pl-4">
+                    <p>• 구독 취소: 언제든지 가능</p>
+                    <p>• 취소 시: 다음 결제일부터 서비스 중단</p>
+                    <p>• 이미 결제된 기간: 환불 정책에 따라 처리</p>
+                    <p>• 취소 방법: 마이페이지 → 구독 취소하기</p>
+                  </div>
+                </div>
+
+                {/* 교환 정책 */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-700 mb-3 flex items-center">
+                    🔄 교환 정책
+                  </h3>
+                  <div className="text-sm text-gray-600 space-y-2 pl-4">
+                    <p>• 디지털 서비스로 교환 불가</p>
+                    <p>• 플랜 변경: 언제든지 가능</p>
+                    <p>• 월간 → 영구: 차액 결제 후 업그레이드</p>
+                    <p>• 영구 → 월간: 환불 후 재구독</p>
+                  </div>
                 </div>
               </div>
 
-              {/* 환불 정책 */}
-              <div>
-                <h3 className="font-semibold text-gray-700 mb-2">💰 환불 정책</h3>
-                <div className="text-sm text-gray-600 space-y-1">
-                  <p>• 구독 후 3일 이내: 전액 환불 가능</p>
-                  <p>• 3일 이후: 환불 불가</p>
-                  <p>• 환불 요청: 마이페이지 → 구독 관리에서 가능</p>
-                </div>
-              </div>
-
-              {/* 취소 규정 */}
-              <div>
-                <h3 className="font-semibold text-gray-700 mb-2">❌ 취소 규정</h3>
-                <div className="text-sm text-gray-600 space-y-1">
-                  <p>• 구독 취소: 언제든지 가능</p>
-                  <p>• 취소 시: 다음 결제일부터 서비스 중단</p>
-                  <p>• 이미 결제된 기간: 환불 정책에 따라 처리</p>
-                  <p>• 취소 방법: 마이페이지 → 구독 취소하기</p>
-                </div>
-              </div>
-
-              {/* 교환 정책 */}
-              <div>
-                <h3 className="font-semibold text-gray-700 mb-2">🔄 교환 정책</h3>
-                <div className="text-sm text-gray-600 space-y-1">
-                  <p>• 디지털 서비스로 교환 불가</p>
-                  <p>• 플랜 변경: 언제든지 가능</p>
-                  <p>• 월간 → 영구: 차액 결제 후 업그레이드</p>
-                  <p>• 영구 → 월간: 환불 후 재구독</p>
-                </div>
+              <div className="mt-8 flex justify-end">
+                <button
+                  onClick={() => setShowPolicyModal(false)}
+                  className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors"
+                >
+                  닫기
+                </button>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
