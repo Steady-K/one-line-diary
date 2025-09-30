@@ -907,6 +907,25 @@ export const subscriptionService = {
     return data;
   },
 
+  // 아임포트 주문 ID로 구독 업데이트
+  async updateSubscriptionByImpMerchantUid(
+    impMerchantUid: string,
+    updates: Partial<Subscription>
+  ): Promise<Subscription | null> {
+    const { data, error } = await supabase
+      .from("subscriptions")
+      .update(updates)
+      .eq("imp_merchant_uid", impMerchantUid)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("아임포트 주문 ID로 구독 업데이트 오류:", error);
+      return null;
+    }
+    return data;
+  },
+
   // 활성 구독 조회
   async getActiveSubscription(
     userId: string | number,

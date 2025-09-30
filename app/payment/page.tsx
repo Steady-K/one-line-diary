@@ -3,21 +3,20 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-// 토스페이먼츠 SDK는 CDN으로 로드
 import Header from "../components/Header";
 import Link from "next/link";
 
-// 토스페이먼츠 타입 정의
+// 아임포트 타입 정의
 declare global {
   interface Window {
-    TossPayments: (clientKey: string) => {
-      requestPayment: (method: string, options: unknown) => void;
+    IMP: {
+      init: (impCode: string) => void;
+      request_pay: (params: any, callback: (response: any) => void) => void;
     };
   }
 }
 
-const clientKey =
-  process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY || "test_ck_placeholder";
+const IMP_CODE = process.env.NEXT_PUBLIC_IMP_CODE || "imp123456789";
 
 export default function PaymentPage() {
   const { data: session, status } = useSession();
@@ -40,6 +39,26 @@ export default function PaymentPage() {
     }
   }, [session]);
 
+  // 아임포트 SDK 로드
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://cdn.iamport.kr/js/iamport.payment-1.2.0.js";
+    script.onload = () => {
+      if (window.IMP) {
+        window.IMP.init(IMP_CODE);
+      }
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      // 컴포넌트 언마운트 시 스크립트 제거
+      const existingScript = document.querySelector('script[src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"]');
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, []);
+
   const fetchSubscription = async () => {
     try {
       const response = await fetch("/api/subscription");
@@ -51,49 +70,73 @@ export default function PaymentPage() {
   };
 
   const handleSubscribe = async () => {
-    if (!session) return;
+    if (!session || !window.IMP) return;
 
     setIsLoading(true);
-    try {
-      // 토스페이먼츠 SDK 로드 확인
-      if (typeof window !== "undefined" && !window.TossPayments) {
-        // SDK가 로드되지 않은 경우 스크립트 추가
-        const script = document.createElement("script");
-        script.src = "https://js.tosspayments.com/v1/payment";
-        script.onload = () => {
-          initializePayment();
-        };
-        document.head.appendChild(script);
-      } else {
-        initializePayment();
-      }
-    } catch (error) {
-      console.error("결제 오류:", error);
-      alert("결제 처리 중 오류가 발생했습니다.");
-      setIsLoading(false);
-    }
-  };
-
-  const initializePayment = () => {
+    
     try {
       // 결제 정보 생성
       const orderId = `order_${Date.now()}_${Math.random()
         .toString(36)
         .substr(2, 9)}`;
 
-      const tossPayments = window.TossPayments(clientKey);
+      const paymentData = {
+        pg: "html5_inicis", // PG사 선택 (html5_inicis, kakaopay, nice 등)
+        pay_method: "card", // 결제 수단
+        merchant_uid: orderId, // 주문번호
+        name: "한줄일기 Premium", // 상품명
+        amount: 1900, // 결제 금액
+        buyer_email: session.user?.email || "", // 구매자 이메일
+        buyer_name: session.user?.name || "사용자", // 구매자 이름
+        buyer_tel: "010-1234-5678", // 구매자 전화번호 (필수)
+        m_redirect_url: `${window.location.origin}/payment/success`, // 모바일 결제 완료 후 리다이렉트 URL
+      };
 
-      tossPayments.requestPayment("카드", {
-        amount: 1900,
-        orderId: orderId,
-        orderName: "한줄일기 Premium",
-        customerName: session?.user?.name || "사용자",
-        customerEmail: session?.user?.email || "",
-        successUrl: `${window.location.origin}/payment/success`,
-        failUrl: `${window.location.origin}/payment/cancel`,
+      window.IMP.request_pay(paymentData, (response) => {
+        console.log("아임포트 결제 응답:", response);
+        
+        if (response.success) {
+          // 결제 성공
+          console.log("결제 성공:", response);
+          
+          // 결제 검증을 위해 서버로 전송
+          fetch("/api/payment/iamport-webhook", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              imp_uid: response.imp_uid,
+              merchant_uid: response.merchant_uid,
+              amount: response.paid_amount,
+              status: response.status,
+              buyer_email: session.user?.email,
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.success) {
+                // 결제 검증 성공 시 성공 페이지로 이동
+                window.location.href = "/payment/success";
+              } else {
+                alert("결제 검증에 실패했습니다.");
+                setIsLoading(false);
+              }
+            })
+            .catch((error) => {
+              console.error("결제 검증 오류:", error);
+              alert("결제 처리 중 오류가 발생했습니다.");
+              setIsLoading(false);
+            });
+        } else {
+          // 결제 실패
+          console.error("결제 실패:", response);
+          alert(`결제 실패: ${response.error_msg}`);
+          setIsLoading(false);
+        }
       });
     } catch (error) {
-      console.error("결제 초기화 오류:", error);
+      console.error("결제 오류:", error);
       alert("결제 처리 중 오류가 발생했습니다.");
       setIsLoading(false);
     }
@@ -138,7 +181,6 @@ export default function PaymentPage() {
       name: "프리미엄",
       price: "1,900",
       period: "/월",
-      priceId: "price_premium_monthly", // 실제 Stripe 가격 ID로 교체 필요
       features: [
         "🚫 모든 광고 완전 제거",
         "⚡ 광고 없이 빠른 일기 작성",
