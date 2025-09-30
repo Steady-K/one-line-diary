@@ -309,14 +309,17 @@ export const diaryService = {
 
     // 월별 필터링 추가
     if (month && year) {
-      const startDate = new Date(year, month - 1, 1);
-      const endDate = new Date(year, month, 0, 23, 59, 59);
+      // 더 정확한 월별 필터링
+      const startDate = new Date(year, month - 1, 1, 0, 0, 0, 0);
+      const endDate = new Date(year, month, 0, 23, 59, 59, 999);
 
       console.log("월별 필터링:", {
         month,
         year,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
+        startDateLocal: startDate.toLocaleString("ko-KR"),
+        endDateLocal: endDate.toLocaleString("ko-KR"),
       });
 
       query = query

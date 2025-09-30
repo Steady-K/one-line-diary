@@ -246,3 +246,138 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* 테마 시스템 */
+:root {
+  --theme-primary: #8B5CF6;
+  --theme-secondary: #EC4899;
+  --theme-background: #F9FAFB;
+  --theme-surface: #FFFFFF;
+  --theme-text: #1F2937;
+  --theme-accent: #F3F4F6;
+  --theme-gradient: from-purple-500 to-pink-500;
+}
+
+/* 기본 테마 */
+.theme-default {
+  --theme-primary: #8B5CF6;
+  --theme-secondary: #EC4899;
+  --theme-background: #F9FAFB;
+  --theme-surface: #FFFFFF;
+  --theme-text: #1F2937;
+  --theme-accent: #F3F4F6;
+  --theme-gradient: from-purple-500 to-pink-500;
+}
+
+/* 봄 테마 */
+.theme-spring {
+  --theme-primary: #10B981;
+  --theme-secondary: #F59E0B;
+  --theme-background: #F0FDF4;
+  --theme-surface: #FFFFFF;
+  --theme-text: #1F2937;
+  --theme-accent: #D1FAE5;
+  --theme-gradient: from-emerald-400 to-green-300;
+}
+
+/* 여름 테마 */
+.theme-summer {
+  --theme-primary: #3B82F6;
+  --theme-secondary: #F59E0B;
+  --theme-background: #EFF6FF;
+  --theme-surface: #FFFFFF;
+  --theme-text: #1F2937;
+  --theme-accent: #DBEAFE;
+  --theme-gradient: from-blue-400 to-cyan-300;
+}
+
+/* 가을 테마 */
+.theme-autumn {
+  --theme-primary: #F59E0B;
+  --theme-secondary: #EF4444;
+  --theme-background: #FFFBEB;
+  --theme-surface: #FFFFFF;
+  --theme-text: #1F2937;
+  --theme-accent: #FEF3C7;
+  --theme-gradient: from-amber-500 to-orange-400;
+}
+
+/* 겨울 테마 */
+.theme-winter {
+  --theme-primary: #6366F1;
+  --theme-secondary: #8B5CF6;
+  --theme-background: #F8FAFC;
+  --theme-surface: #FFFFFF;
+  --theme-text: #1F2937;
+  --theme-accent: #E2E8F0;
+  --theme-gradient: from-indigo-400 to-purple-300;
+}
+
+/* 테마 적용된 요소들 */
+.theme-primary {
+  background-color: var(--theme-primary);
+}
+
+.theme-secondary {
+  background-color: var(--theme-secondary);
+}
+
+.theme-background {
+  background-color: var(--theme-background);
+}
+
+.theme-surface {
+  background-color: var(--theme-surface);
+}
+
+.theme-text {
+  color: var(--theme-text);
+}
+
+.theme-accent {
+  background-color: var(--theme-accent);
+}
+
+.theme-gradient {
+  background: linear-gradient(to right, var(--theme-primary), var(--theme-secondary));
+}
+
+/* 테마별 버튼 스타일 */
+.theme-btn {
+  background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.theme-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+/* 테마별 카드 스타일 */
+.theme-card {
+  background: var(--theme-surface);
+  border: 2px solid var(--theme-accent);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* 테마별 입력 필드 스타일 */
+.theme-input {
+  border: 2px solid var(--theme-accent);
+  border-radius: 12px;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+  background: var(--theme-surface);
+}
+
+.theme-input:focus {
+  border-color: var(--theme-primary);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+  outline: none;
+}
+

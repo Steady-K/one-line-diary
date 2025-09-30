@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Header from "../components/Header";
 import Link from "next/link";
+import ThemeSelector from "../components/ThemeSelector";
 
 interface UserProfile {
   id: number;
@@ -378,6 +379,9 @@ export default function MyPage() {
               </div>
             </div>
           </div>
+
+          {/* 테마 설정 */}
+          <ThemeSelector isPremium={isPremium} />
 
           {/* 계정 관리 */}
           <div className="bg-white rounded-xl shadow-lg p-6">

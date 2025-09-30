@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "./components/AuthProvider";
+import { ThemeInitializer } from "./components/ThemeInitializer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -114,6 +115,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <AuthProvider>
+          <ThemeInitializer />
           <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
             {children}
           </div>
