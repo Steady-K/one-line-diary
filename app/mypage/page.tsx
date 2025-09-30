@@ -405,7 +405,6 @@ export default function MyPage() {
               </button>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -415,7 +414,9 @@ export default function MyPage() {
           <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">서비스 정책</h2>
+                <h2 className="text-2xl font-bold text-gray-800">
+                  서비스 정책
+                </h2>
                 <button
                   onClick={() => setShowPolicyModal(false)}
                   className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
@@ -423,8 +424,24 @@ export default function MyPage() {
                   ×
                 </button>
               </div>
-              
+
               <div className="space-y-6">
+                {/* 사업자 정보 */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="text-lg font-semibold text-gray-700 mb-3 flex items-center">
+                    🏢 사업자 정보
+                  </h3>
+                  <div className="text-sm text-gray-600 space-y-1">
+                    <p><strong>상호명:</strong> 원라인(Only Oneline)</p>
+                    <p><strong>사업자등록번호:</strong> 123-45-67890</p>
+                    <p><strong>대표자명:</strong> 김재환</p>
+                    <p><strong>연락처:</strong> 010-1234-5678</p>
+                    <p><strong>사업장주소:</strong> 서울특별시 강남구 테헤란로 123</p>
+                    <p><strong>통신판매신고번호:</strong> 제2024-서울강남-1234호</p>
+                    <p><strong>간이과세자:</strong> 간이과세자</p>
+                  </div>
+                </div>
+
                 {/* 서비스 제공기간 */}
                 <div>
                   <h3 className="text-lg font-semibold text-gray-700 mb-3 flex items-center">
