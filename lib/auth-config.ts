@@ -39,17 +39,6 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        // 개발 환경에서 테스트 계정 허용
-        if (process.env.NODE_ENV === 'development' && 
-            credentials.email === 'test@example.com' && 
-            credentials.password === 'test123') {
-          return {
-            id: 'test-user-id',
-            email: 'test@example.com',
-            name: '테스트 사용자',
-          };
-        }
-
         // Supabase에서 사용자 확인
         const user = await userService.getUserByEmail(credentials.email);
 
