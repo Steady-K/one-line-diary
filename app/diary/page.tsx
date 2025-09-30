@@ -143,7 +143,7 @@ function DiaryPageContent() {
 
         // 프로필이 완전하지 않으면 설정 창 표시
         if (
-          !data.profile.nickname ||
+          !data.profile.name ||
           !data.profile.gender ||
           !data.profile.birth_date
         ) {

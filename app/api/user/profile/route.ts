@@ -33,14 +33,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { nickname, gender, birthDate } = await request.json();
+    const { name, gender, birthDate } = await request.json();
 
     // 프로필 생성
     const profile = await userService.createUserProfile(
       session.user.id,
       session.user.email || "",
       {
-        nickname,
+        name,
         gender,
         birth_date: birthDate,
       }
@@ -63,14 +63,14 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { nickname, gender, birthDate } = await request.json();
+    const { name, gender, birthDate } = await request.json();
 
     // 프로필 수정
     const profile = await userService.updateUserProfile(
       session.user.id,
       session.user.email || "",
       {
-        nickname,
+        name,
         gender,
         birth_date: birthDate,
       }

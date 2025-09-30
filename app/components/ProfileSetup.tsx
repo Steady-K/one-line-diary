@@ -10,7 +10,7 @@ interface ProfileSetupProps {
 export default function ProfileSetup({ onComplete }: ProfileSetupProps) {
   const { data: session } = useSession();
   const [formData, setFormData] = useState({
-    nickname: "",
+    name: "",
     gender: "",
     birthDate: "",
   });
@@ -74,8 +74,8 @@ export default function ProfileSetup({ onComplete }: ProfileSetupProps) {
             </label>
             <input
               type="text"
-              name="nickname"
-              value={formData.nickname}
+              name="name"
+              value={formData.name}
               onChange={handleInputChange}
               placeholder="닉네임을 입력해주세요"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"

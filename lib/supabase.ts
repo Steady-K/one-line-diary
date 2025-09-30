@@ -170,7 +170,7 @@ export const userService = {
     userId: string | number,
     userEmail: string,
     profileData: {
-      nickname: string;
+      name: string;
       gender: string;
       birth_date: string;
     }
@@ -184,7 +184,7 @@ export const userService = {
     const { data, error } = await supabase
       .from("users")
       .update({
-        nickname: profileData.nickname,
+        name: profileData.name,
         gender: profileData.gender,
         birth_date: profileData.birth_date,
         updated_at: new Date().toISOString(),
@@ -205,7 +205,7 @@ export const userService = {
     userId: string | number,
     userEmail: string,
     profileData: {
-      nickname: string;
+      name: string;
       gender: string;
       birth_date: string;
     }
@@ -219,7 +219,7 @@ export const userService = {
     const { data, error } = await supabase
       .from("users")
       .update({
-        nickname: profileData.nickname,
+        name: profileData.name,
         gender: profileData.gender,
         birth_date: profileData.birth_date,
         updated_at: new Date().toISOString(),
