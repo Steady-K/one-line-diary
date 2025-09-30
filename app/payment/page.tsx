@@ -11,7 +11,10 @@ declare global {
   interface Window {
     IMP: {
       init: (impCode: string) => void;
-      request_pay: (params: PaymentParams, callback: (response: PaymentResponse) => void) => void;
+      request_pay: (
+        params: PaymentParams,
+        callback: (response: PaymentResponse) => void
+      ) => void;
     };
   }
 }

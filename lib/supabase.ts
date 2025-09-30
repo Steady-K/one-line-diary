@@ -66,8 +66,6 @@ export interface Subscription {
   end_date?: string;
   stripe_customer_id?: string;
   stripe_subscription_id?: string;
-  toss_order_id?: string;
-  toss_payment_key?: string;
   imp_uid?: string;
   imp_merchant_uid?: string;
   created_at: string;
@@ -890,24 +888,6 @@ export const subscriptionService = {
     return data;
   },
 
-  // 토스페이먼츠 주문 ID로 구독 업데이트
-  async updateSubscriptionByTossOrderId(
-    tossOrderId: string,
-    updates: Partial<Subscription>
-  ): Promise<Subscription | null> {
-    const { data, error } = await supabase
-      .from("subscriptions")
-      .update(updates)
-      .eq("toss_order_id", tossOrderId)
-      .select()
-      .single();
-
-    if (error) {
-      console.error("토스페이먼츠 주문 ID로 구독 업데이트 오류:", error);
-      return null;
-    }
-    return data;
-  },
 
   // 아임포트 주문 ID로 구독 업데이트
   async updateSubscriptionByImpMerchantUid(

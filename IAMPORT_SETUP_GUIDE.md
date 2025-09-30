@@ -9,6 +9,7 @@
 ### 1단계: 아임포트 계정 생성
 
 1. **아임포트 홈페이지 접속**
+
    - https://www.iamport.kr/ 방문
    - 회원가입 및 로그인
 
@@ -46,10 +47,12 @@ KAKAO_CLIENT_SECRET=your-kakao-client-secret
 ### 3단계: 아임포트 대시보드 설정
 
 1. **가맹점 식별코드 확인**
+
    - 대시보드 → 설정 → 가맹점 정보
    - `imp_`로 시작하는 코드 복사
 
 2. **액세스 토큰 발급**
+
    - 대시보드 → API 키 관리
    - REST API 키 복사
 
@@ -63,7 +66,7 @@ KAKAO_CLIENT_SECRET=your-kakao-client-secret
 
 ```sql
 -- 아임포트 관련 필드 추가
-ALTER TABLE subscriptions 
+ALTER TABLE subscriptions
 ADD COLUMN imp_uid VARCHAR(255),
 ADD COLUMN imp_merchant_uid VARCHAR(255);
 
@@ -75,32 +78,38 @@ CREATE INDEX idx_subscriptions_imp_merchant_uid ON subscriptions(imp_merchant_ui
 ### 5단계: 테스트 카드 정보
 
 **성공 테스트 카드:**
+
 - 카드 번호: 4242 4242 4242 4242
 - 만료일: 12/25
 - CVC: 123
 - 비밀번호: 12
 
 **실패 테스트 카드:**
+
 - 카드 번호: 4000 0000 0000 0002 (거부됨)
 - 카드 번호: 4000 0000 0000 9995 (잔액 부족)
 
 ## 🔧 변경된 파일들
 
 ### 1. 결제 페이지 (`app/payment/page.tsx`)
+
 - 토스페이먼츠 SDK → 아임포트 SDK로 변경
 - 결제 플로우 아임포트 방식으로 수정
 - 결제 검증 로직 추가
 
 ### 2. 웹훅 API (`app/api/payment/iamport-webhook/route.ts`)
+
 - 아임포트 결제 검증 로직
 - 서버사이드 결제 확인
 - 구독 상태 업데이트
 
 ### 3. Supabase 서비스 (`lib/supabase.ts`)
+
 - 아임포트 관련 함수 추가
 - `updateSubscriptionByImpMerchantUid` 함수
 
 ### 4. 스키마 업데이트 (`update-subscription-schema-iamport.sql`)
+
 - 아임포트 필드 추가
 - 인덱스 생성
 
@@ -115,15 +124,17 @@ CREATE INDEX idx_subscriptions_imp_merchant_uid ON subscriptions(imp_merchant_ui
 ## 🚀 배포 및 테스트
 
 1. **환경변수 설정**
+
    ```bash
    # 로컬 테스트
    npm run dev
-   
+
    # Vercel 배포
    vercel --prod
    ```
 
 2. **결제 테스트**
+
    - `http://localhost:3000/payment` 접속
    - "프리미엄 시작하기" 클릭
    - 테스트 카드 정보 입력
