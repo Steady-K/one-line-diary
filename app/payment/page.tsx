@@ -11,9 +11,30 @@ declare global {
   interface Window {
     IMP: {
       init: (impCode: string) => void;
-      request_pay: (params: any, callback: (response: any) => void) => void;
+      request_pay: (params: PaymentParams, callback: (response: PaymentResponse) => void) => void;
     };
   }
+}
+
+interface PaymentParams {
+  pg: string;
+  pay_method: string;
+  merchant_uid: string;
+  name: string;
+  amount: number;
+  buyer_email: string;
+  buyer_name: string;
+  buyer_tel: string;
+  m_redirect_url: string;
+}
+
+interface PaymentResponse {
+  success: boolean;
+  imp_uid: string;
+  merchant_uid: string;
+  paid_amount: number;
+  status: string;
+  error_msg?: string;
 }
 
 const IMP_CODE = process.env.NEXT_PUBLIC_IMP_CODE || "imp123456789";
@@ -52,7 +73,9 @@ export default function PaymentPage() {
 
     return () => {
       // 컴포넌트 언마운트 시 스크립트 제거
-      const existingScript = document.querySelector('script[src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"]');
+      const existingScript = document.querySelector(
+        'script[src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"]'
+      );
       if (existingScript) {
         existingScript.remove();
       }
@@ -73,7 +96,7 @@ export default function PaymentPage() {
     if (!session || !window.IMP) return;
 
     setIsLoading(true);
-    
+
     try {
       // 결제 정보 생성
       const orderId = `order_${Date.now()}_${Math.random()
@@ -94,11 +117,11 @@ export default function PaymentPage() {
 
       window.IMP.request_pay(paymentData, (response) => {
         console.log("아임포트 결제 응답:", response);
-        
+
         if (response.success) {
           // 결제 성공
           console.log("결제 성공:", response);
-          
+
           // 결제 검증을 위해 서버로 전송
           fetch("/api/payment/iamport-webhook", {
             method: "POST",
