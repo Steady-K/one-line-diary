@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   other: {
     "og:image": "https://one-line-diary-7ztrc4x97-kimjaehwans-projects-0e66ef8d.vercel.app/thumbnail.png",
     "og:image:url": "https://one-line-diary-7ztrc4x97-kimjaehwans-projects-0e66ef8d.vercel.app/thumbnail.png",
-    "og:image:width": "1200",
-    "og:image:height": "630",
+    "og:image:width": "1024",
+    "og:image:height": "1024",
     "og:image:type": "image/png",
     "og:image:alt": "한줄일기 썸네일 - 일기를 쓰는 귀여운 캐릭터",
     "og:image:secure_url": "https://one-line-diary-7ztrc4x97-kimjaehwans-projects-0e66ef8d.vercel.app/thumbnail.png",
@@ -43,8 +43,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://one-line-diary-7ztrc4x97-kimjaehwans-projects-0e66ef8d.vercel.app/thumbnail.png",
-        width: 1200,
-        height: 630,
+        width: 1024,
+        height: 1024,
         alt: "한줄일기 썸네일 - 일기를 쓰는 귀여운 캐릭터",
       },
     ],
