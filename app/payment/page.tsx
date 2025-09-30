@@ -40,7 +40,7 @@ interface PaymentResponse {
   error_msg?: string;
 }
 
-const IMP_CODE = process.env.NEXT_PUBLIC_IMP_CODE || "imp123456789";
+const IMP_CODE = process.env.NEXT_PUBLIC_IMP_CODE || "store-5c051fb2-4e88-40d3-8d70-79185605f777";
 
 export default function PaymentPage() {
   const { data: session, status } = useSession();
