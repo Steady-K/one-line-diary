@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
           imp_uid: imp_uid,
           imp_merchant_uid: merchant_uid,
           end_date: isLifetime
-            ? null // 영구 프리미엄은 종료일 없음
+            ? undefined // 영구 프리미엄은 종료일 없음
             : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30일 후
         }
       );
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
         imp_uid: imp_uid,
         imp_merchant_uid: merchant_uid,
         end_date: isLifetime
-          ? null // 영구 프리미엄은 종료일 없음
+          ? undefined // 영구 프리미엄은 종료일 없음
           : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30일 후
       });
 

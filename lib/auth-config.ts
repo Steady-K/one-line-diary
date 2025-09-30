@@ -97,7 +97,7 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       try {
         // 모든 프로바이더에서 사용자 확인 및 자동 생성
         const supabaseUser = await userService.getUserByEmail(user.email!);
