@@ -68,6 +68,8 @@ export interface Subscription {
   stripe_subscription_id?: string;
   toss_order_id?: string;
   toss_payment_key?: string;
+  imp_uid?: string;
+  imp_merchant_uid?: string;
   created_at: string;
   updated_at: string;
 }
