@@ -557,8 +557,8 @@ export default function DiaryForm({
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="오늘 하루는 어땠나요?"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-                rows={3}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none h-12"
+                rows={1}
                 maxLength={200}
                 disabled={isLoading}
               />
