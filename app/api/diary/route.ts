@@ -76,6 +76,14 @@ export async function GET(request: NextRequest) {
     const userId = parseInt(session.user.id);
     const userEmail = session.user.email || undefined;
 
+    console.log("일기 목록 API 요청:", {
+      userId,
+      month,
+      year,
+      limit,
+      currentDate: new Date().toISOString(),
+    });
+
     // Supabase를 사용한 일기 목록 조회
     const diaries = await diaryService.getUserDiaries(
       userId,
@@ -84,6 +92,18 @@ export async function GET(request: NextRequest) {
       month,
       year
     );
+
+    console.log("일기 목록 API 응답:", {
+      userId,
+      month,
+      year,
+      diaryCount: diaries.length,
+      diaries: diaries.map(d => ({
+        id: d.id,
+        created_at: d.created_at,
+        content: d.content.substring(0, 20) + "..."
+      }))
+    });
 
     return NextResponse.json({ diaries });
   } catch (error) {

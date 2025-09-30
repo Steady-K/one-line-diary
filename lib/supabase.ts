@@ -312,6 +312,13 @@ export const diaryService = {
       const startDate = new Date(year, month - 1, 1);
       const endDate = new Date(year, month, 0, 23, 59, 59);
 
+      console.log("월별 필터링:", {
+        month,
+        year,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+      });
+
       query = query
         .gte("created_at", startDate.toISOString())
         .lte("created_at", endDate.toISOString());
