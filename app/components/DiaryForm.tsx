@@ -68,48 +68,32 @@ export default function DiaryForm({
 
   // 외부에서 삭제 알림을 받을 때 오늘 일기 상태 재확인
   useEffect(() => {
-    console.log("DiaryForm: onDiaryDeleted 트리거 감지:", onDiaryDeleted);
     if (onDiaryDeleted !== undefined && onDiaryDeleted > 0) {
-      console.log("DiaryForm: 오늘 일기 상태 재확인 시작");
       checkTodayDiary();
     }
   }, [onDiaryDeleted]);
 
   const checkTodayDiary = async () => {
-    console.log("DiaryForm: checkTodayDiary 시작");
     try {
       const response = await fetch("/api/diary?today=true");
-      console.log("DiaryForm: API 응답 상태:", response.status);
       
       if (response.ok) {
         const data = await response.json();
-        console.log("DiaryForm: 오늘 일기 조회 결과:", data);
-        console.log("DiaryForm: 응답 데이터 타입:", typeof data);
-        console.log("DiaryForm: hasTodayDiary 타입:", typeof data.hasTodayDiary);
-        console.log("DiaryForm: hasTodayDiary 값:", data.hasTodayDiary);
-        console.log("DiaryForm: diary 데이터 타입:", typeof data.diary);
-        console.log("DiaryForm: diary 데이터:", data.diary);
         
         if (data.hasTodayDiary && data.diary) {
           setTodayDiary(data.diary);
           setContent(data.diary.content);
           setEmotion(data.diary.emotion);
           setMood(data.diary.mood);
-          console.log("DiaryForm: 오늘 일기 있음, 상태 업데이트 완료");
         } else {
           setTodayDiary(null);
           setContent("");
           setEmotion("😊");
           setMood(5);
-          console.log("DiaryForm: 오늘 일기 없음, 상태 초기화 완료");
         }
-      } else {
-        console.error("DiaryForm: API 응답 오류:", response.status, response.statusText);
-        const errorData = await response.text();
-        console.error("DiaryForm: 오류 상세:", errorData);
       }
     } catch (error) {
-      console.error("DiaryForm: 오늘 일기 확인 오류:", error);
+      // 오류 처리
     } finally {
       setIsCheckingToday(false);
     }
@@ -179,10 +163,6 @@ export default function DiaryForm({
         // 새 일기 작성 후 즉시 todayDiary 상태 업데이트
         if (!isEditing && result.diary) {
           setTodayDiary(result.diary);
-          console.log(
-            "DiaryForm: 새 일기 작성 완료, todayDiary 상태 업데이트:",
-            result.diary
-          );
         }
         // checkTodayDiary는 제거 - 이미 setTodayDiary로 상태 업데이트했으므로
       } else {
@@ -324,10 +304,6 @@ export default function DiaryForm({
         // 새 일기 작성 후 즉시 todayDiary 상태 업데이트
         if (result.diary) {
           setTodayDiary(result.diary);
-          console.log(
-            "DiaryForm: 새 일기 작성 완료, todayDiary 상태 업데이트:",
-            result.diary
-          );
         }
         // checkTodayDiary는 제거 - 이미 setTodayDiary로 상태 업데이트했으므로
       } else {
@@ -480,12 +456,6 @@ export default function DiaryForm({
       <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-6">
         {/* 디버깅: todayDiary 상태 확인 */}
         {(() => {
-          console.log(
-            "DiaryForm 렌더링 - todayDiary:",
-            todayDiary,
-            "isEditing:",
-            isEditing
-          );
           return null;
         })()}
         {/* 오늘 작성된 일기가 있는 경우 */}

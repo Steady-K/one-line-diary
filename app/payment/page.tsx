@@ -68,24 +68,14 @@ export default function PaymentPage() {
 
   // 아임포트 SDK 로드
   useEffect(() => {
-    console.log("아임포트 SDK 로드 시작");
-    console.log(
-      "환경변수 NEXT_PUBLIC_IMP_CODE:",
-      process.env.NEXT_PUBLIC_IMP_CODE
-    );
-    console.log("IMP_CODE:", IMP_CODE);
-
     // 이미 스크립트가 로드되어 있는지 확인
     const existingScript = document.querySelector(
       'script[src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"]'
     );
 
     if (existingScript) {
-      console.log("아임포트 SDK 이미 로드됨");
       if (window.IMP) {
-        console.log("아임포트 초기화 시작, 코드:", IMP_CODE);
         window.IMP.init(IMP_CODE);
-        console.log("아임포트 초기화 완료");
       }
       return;
     }
@@ -93,17 +83,9 @@ export default function PaymentPage() {
     const script = document.createElement("script");
     script.src = "https://cdn.iamport.kr/js/iamport.payment-1.2.0.js";
     script.onload = () => {
-      console.log("아임포트 SDK 로드 완료");
       if (window.IMP) {
-        console.log("아임포트 초기화 시작, 코드:", IMP_CODE);
         window.IMP.init(IMP_CODE);
-        console.log("아임포트 초기화 완료");
-      } else {
-        console.error("window.IMP가 정의되지 않음");
       }
-    };
-    script.onerror = () => {
-      console.error("아임포트 SDK 로드 실패");
     };
     document.head.appendChild(script);
 
@@ -172,11 +154,6 @@ export default function PaymentPage() {
   const handleSubscribe = async () => {
     if (!session || !window.IMP) return;
 
-    console.log("결제 시작");
-    console.log("선택된 PG사:", selectedPg);
-    console.log("선택된 결제수단:", selectedPayMethod);
-    console.log("아임포트 가맹점 코드:", IMP_CODE);
-
     setIsLoading(true);
 
     try {
@@ -215,14 +192,9 @@ export default function PaymentPage() {
         }),
       };
 
-      console.log("결제 요청 데이터:", paymentData);
-
       window.IMP.request_pay(paymentData, (response) => {
-        console.log("아임포트 결제 응답:", response);
-
         if (response.success) {
           // 결제 성공
-          console.log("결제 성공:", response);
 
           // 결제 검증을 위해 서버로 전송
           fetch("/api/payment/iamport-webhook", {
@@ -255,13 +227,11 @@ export default function PaymentPage() {
             });
         } else {
           // 결제 실패
-          console.error("결제 실패:", response);
           alert(`결제 실패: ${response.error_msg}`);
           setIsLoading(false);
         }
       });
     } catch (error) {
-      console.error("결제 오류:", error);
       alert("결제 처리 중 오류가 발생했습니다.");
       setIsLoading(false);
     }

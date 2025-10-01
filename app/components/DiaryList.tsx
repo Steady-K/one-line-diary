@@ -127,7 +127,6 @@ export default function DiaryList({
             today.getDate() === diaryDate.getDate();
 
           if (isTodayDiary && onTodayDiaryDeleted) {
-            console.log("DiaryList: 오늘 일기 삭제 감지, 알림 전송");
             onTodayDiaryDeleted(); // 오늘 일기 삭제 알림
           }
         }

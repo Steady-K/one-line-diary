@@ -634,9 +634,6 @@ export const diaryService = {
     // 오늘 날짜 문자열 생성 (YYYY-MM-DD)
     const today = new Date();
     const todayStr = today.toISOString().split('T')[0];
-    
-    console.log("오늘 일기 조회 - 오늘 날짜:", todayStr);
-    console.log("오늘 일기 조회 - 입력 userId:", userId);
 
     // NextAuth에서 오는 큰 숫자 ID를 처리
     const idString = userId.toString();
@@ -646,18 +643,14 @@ export const diaryService = {
     let actualUserId = id;
     if (isNaN(id) || id > 2147483647) {
       if (!userEmail) {
-        console.error("큰 ID인데 이메일이 제공되지 않음:", userId);
         return null;
       }
       const user = await userService.getUserByEmail(userEmail);
       if (!user) {
-        console.error("사용자를 찾을 수 없습니다:", userEmail);
         return null;
       }
       actualUserId = user.id;
     }
-
-    console.log("오늘 일기 조회 - 실제 userId:", actualUserId);
 
     // 모든 일기를 가져와서 오늘 날짜와 비교 (단순한 방법)
     const { data: allDiaries, error } = await supabase
@@ -667,11 +660,8 @@ export const diaryService = {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("일기 조회 오류:", error);
       return null;
     }
-
-    console.log("조회된 일기 수:", allDiaries?.length || 0);
 
     // 오늘 날짜의 일기 찾기
     const todayDiary = allDiaries?.find(diary => {
@@ -679,16 +669,7 @@ export const diaryService = {
       return diaryDate === todayStr;
     });
 
-    if (todayDiary) {
-      console.log("오늘 일기 발견:", todayDiary);
-      console.log("반환할 todayDiary 타입:", typeof todayDiary);
-      console.log("반환할 todayDiary 존재 여부:", !!todayDiary);
-      console.log("반환할 todayDiary ID:", todayDiary.id);
-      return todayDiary;
-    } else {
-      console.log("오늘 일기 없음");
-      return null;
-    }
+    return todayDiary || null;
   },
 };
 

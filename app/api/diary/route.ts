@@ -77,25 +77,12 @@ export async function GET(request: NextRequest) {
     const userId = parseInt(session.user.id);
     const userEmail = session.user.email || undefined;
 
-    console.log("일기 목록 API 요청:", {
-      userId,
-      month,
-      year,
-      limit,
-      today,
-      currentDate: new Date().toISOString(),
-    });
-
     // 오늘 일기 확인 요청인 경우
     if (today) {
       const todayDiary = await diaryService.getTodayDiary(userId, userEmail);
-      console.log("오늘 일기 확인 결과:", todayDiary);
-      console.log("todayDiary 타입:", typeof todayDiary);
-      console.log("todayDiary 존재 여부:", !!todayDiary);
 
       // todayDiary가 존재하고 유효한 객체인지 확인
       if (todayDiary && typeof todayDiary === "object" && todayDiary.id) {
-        console.log("오늘 일기 있음 - 응답 전송");
         const response = {
           hasTodayDiary: true,
           diary: {
@@ -110,15 +97,12 @@ export async function GET(request: NextRequest) {
             updated_at: todayDiary.updated_at,
           },
         };
-        console.log("응답 데이터:", JSON.stringify(response, null, 2));
         return NextResponse.json(response);
       } else {
-        console.log("오늘 일기 없음 - 응답 전송");
         const response = {
           hasTodayDiary: false,
           diary: null,
         };
-        console.log("응답 데이터:", JSON.stringify(response, null, 2));
         return NextResponse.json(response);
       }
     }
@@ -131,18 +115,6 @@ export async function GET(request: NextRequest) {
       month,
       year
     );
-
-    console.log("일기 목록 API 응답:", {
-      userId,
-      month,
-      year,
-      diaryCount: diaries.length,
-      diaries: diaries.map((d) => ({
-        id: d.id,
-        created_at: d.created_at,
-        content: d.content.substring(0, 20) + "...",
-      })),
-    });
 
     return NextResponse.json({ diaries });
   } catch (error) {
