@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
 
     // 오늘 일기 확인 요청인 경우
     if (today) {
-      const todayDiary = await diaryService.getTodayDiary(userId);
+      const todayDiary = await diaryService.getTodayDiary(userId, userEmail);
       console.log("오늘 일기 확인 결과:", todayDiary);
       console.log("todayDiary 타입:", typeof todayDiary);
       console.log("todayDiary 존재 여부:", !!todayDiary);
