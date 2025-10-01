@@ -207,6 +207,12 @@ export default function PaymentPage() {
         m_redirect_url: `${window.location.origin}/payment/success`, // 모바일 결제 완료 후 리다이렉트 URL
         app_scheme: "onlyoneline", // 앱 스킴 (카카오페이용)
         digital: true, // 디지털 상품 여부
+        // NHN KCP 전용 설정
+        ...(selectedPg === "nice" && {
+          channel_key: "channel-key-893faced-f9e0-41a5-9ba5-53d3de5dcc3f",
+          site_code: "AO09C",
+          site_key: "2MhMz5FPv6G1cuXcwtxuvX1__",
+        }),
       };
 
       console.log("결제 요청 데이터:", paymentData);
