@@ -188,7 +188,6 @@ export default function DiaryList({
         </button>
       </div>
 
-
       {/* 일기 목록 */}
       {diaries.length === 0 ? (
         <div className="text-center py-12">

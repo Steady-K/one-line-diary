@@ -73,6 +73,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "50");
     const month = parseInt(searchParams.get("month") || "0");
     const year = parseInt(searchParams.get("year") || "0");
+    const today = searchParams.get("today") === "true";
     const userId = parseInt(session.user.id);
     const userEmail = session.user.email || undefined;
 
@@ -81,10 +82,29 @@ export async function GET(request: NextRequest) {
       month,
       year,
       limit,
+      today,
       currentDate: new Date().toISOString(),
     });
 
-    // Supabase를 사용한 일기 목록 조회
+    // 오늘 일기 확인 요청인 경우
+    if (today) {
+      const todayDiary = await diaryService.getTodayDiary(userId);
+      console.log("오늘 일기 확인 결과:", todayDiary);
+      
+      if (todayDiary) {
+        return NextResponse.json({
+          hasTodayDiary: true,
+          diary: todayDiary
+        });
+      } else {
+        return NextResponse.json({
+          hasTodayDiary: false,
+          diary: null
+        });
+      }
+    }
+
+    // 일반 월별 일기 목록 조회
     const diaries = await diaryService.getUserDiaries(
       userId,
       limit,

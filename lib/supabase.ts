@@ -628,6 +628,34 @@ export const diaryService = {
       monthEntries: diaryList.length,
     };
   },
+
+  // 오늘 일기 조회
+  async getTodayDiary(userId: number): Promise<Diary | null> {
+    const today = new Date();
+    const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
+    const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+
+    const { data, error } = await supabase
+      .from("diaries")
+      .select("*")
+      .eq("user_id", userId)
+      .gte("created_at", startOfDay.toISOString())
+      .lte("created_at", endOfDay.toISOString())
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        // 데이터가 없음
+        return null;
+      }
+      console.error("오늘 일기 조회 오류:", error);
+      return null;
+    }
+
+    return data;
+  },
 };
 
 // 식물 관련 함수
