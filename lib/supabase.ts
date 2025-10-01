@@ -311,14 +311,18 @@ export const diaryService = {
     if (month && year) {
       console.log("월별 필터링 요청:", { month, year });
       
-      // PostgreSQL의 EXTRACT 함수를 사용하여 년월 추출 후 비교
-      // 이 방법은 시간대 문제를 완전히 회피합니다
+      // 가장 안전한 방법: 월 범위를 넓게 설정하고 클라이언트에서 필터링
+      const yearMonth = `${year}-${month.toString().padStart(2, "0")}`;
+      
+      // 월 범위를 넓게 설정 (전달 25일 ~ 다음달 5일)
+      const prevMonth = month === 1 ? 12 : month - 1;
+      const prevYear = month === 1 ? year - 1 : year;
+      const nextMonth = month === 12 ? 1 : month + 1;
+      const nextYear = month === 12 ? year + 1 : year;
+      
       query = query
-        .filter('created_at', 'gte', `${year}-${month.toString().padStart(2, '0')}-01`)
-        .filter('created_at', 'lt', month === 12 
-          ? `${year + 1}-01-01` 
-          : `${year}-${(month + 1).toString().padStart(2, '0')}-01`
-        );
+        .gte('created_at', `${prevYear}-${prevMonth.toString().padStart(2, "0")}-25T00:00:00`)
+        .lt('created_at', `${nextYear}-${nextMonth.toString().padStart(2, "0")}-05T23:59:59`);
     }
 
     const { data, error } = await query
@@ -329,7 +333,40 @@ export const diaryService = {
       console.error("일기 조회 오류:", error);
       return [];
     }
-    return data || [];
+
+    // 디버깅을 위해 실제 데이터 확인
+    if (data && data.length > 0) {
+      console.log("조회된 일기 데이터 샘플:", data.slice(0, 3).map(d => ({
+        id: d.id,
+        created_at: d.created_at,
+        content: d.content.substring(0, 20) + "..."
+      })));
+    }
+
+    // 클라이언트 사이드에서 정확한 월별 필터링
+    let filteredData = data || [];
+    if (month && year && data) {
+      filteredData = data.filter(diary => {
+        const diaryDate = new Date(diary.created_at);
+        const diaryYear = diaryDate.getFullYear();
+        const diaryMonth = diaryDate.getMonth() + 1; // getMonth()는 0부터 시작
+        
+        console.log("필터링 체크:", {
+          diaryDate: diary.created_at,
+          diaryYear,
+          diaryMonth,
+          targetYear: year,
+          targetMonth: month,
+          match: diaryYear === year && diaryMonth === month
+        });
+        
+        return diaryYear === year && diaryMonth === month;
+      });
+      
+      console.log(`월별 필터링 결과: ${data.length}개 중 ${filteredData.length}개 선택`);
+    }
+
+    return filteredData;
   },
 
   // 특정 일기 조회
@@ -481,22 +518,30 @@ export const diaryService = {
       actualUserId = user.id;
     }
 
-    // 월별 필터링 - 날짜 문자열로 직접 비교하여 시간대 문제 회피
-    const startOfMonth = `${year}-${month.toString().padStart(2, '0')}-01`;
-    const endOfMonth = month === 12 
-      ? `${year + 1}-01-01` 
-      : `${year}-${(month + 1).toString().padStart(2, '0')}-01`;
+    // 월별 필터링 - 넓은 범위로 조회 후 클라이언트에서 필터링
+    const prevMonth = month === 1 ? 12 : month - 1;
+    const prevYear = month === 1 ? year - 1 : year;
+    const nextMonth = month === 12 ? 1 : month + 1;
+    const nextYear = month === 12 ? year + 1 : year;
 
-    console.log("통계 월별 필터링:", { month, year, startOfMonth, endOfMonth });
+    console.log("통계 월별 필터링:", { month, year, prevMonth, prevYear, nextMonth, nextYear });
 
-    // 해당 월의 모든 일기 가져오기
-    const { data: diaries, error } = await supabase
+    // 해당 월의 모든 일기 가져오기 (넓은 범위로 조회)
+    const { data: allDiaries, error } = await supabase
       .from("diaries")
       .select("*")
       .eq("user_id", actualUserId)
-      .gte("created_at", startOfMonth)
-      .lt("created_at", endOfMonth)
+      .gte("created_at", `${prevYear}-${prevMonth.toString().padStart(2, "0")}-25T00:00:00`)
+      .lt("created_at", `${nextYear}-${nextMonth.toString().padStart(2, "0")}-05T23:59:59`)
       .order("created_at", { ascending: true });
+
+    // 클라이언트 사이드에서 정확한 월별 필터링
+    const diaries = allDiaries?.filter(diary => {
+      const diaryDate = new Date(diary.created_at);
+      const diaryYear = diaryDate.getFullYear();
+      const diaryMonth = diaryDate.getMonth() + 1;
+      return diaryYear === year && diaryMonth === month;
+    }) || [];
 
     if (error) {
       console.error("일기 조회 오류:", error);
