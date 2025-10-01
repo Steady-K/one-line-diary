@@ -248,67 +248,67 @@ body {
 
 /* 테마 시스템 */
 :root {
-  --theme-primary: #8B5CF6;
-  --theme-secondary: #EC4899;
-  --theme-background: #F9FAFB;
-  --theme-surface: #FFFFFF;
-  --theme-text: #1F2937;
-  --theme-accent: #F3F4F6;
+  --theme-primary: #8b5cf6;
+  --theme-secondary: #ec4899;
+  --theme-background: #f9fafb;
+  --theme-surface: #ffffff;
+  --theme-text: #1f2937;
+  --theme-accent: #f3f4f6;
   --theme-gradient: from-purple-500 to-pink-500;
 }
 
 /* 기본 테마 */
 .theme-default {
-  --theme-primary: #8B5CF6;
-  --theme-secondary: #EC4899;
-  --theme-background: #F9FAFB;
-  --theme-surface: #FFFFFF;
-  --theme-text: #1F2937;
-  --theme-accent: #F3F4F6;
+  --theme-primary: #8b5cf6;
+  --theme-secondary: #ec4899;
+  --theme-background: #f9fafb;
+  --theme-surface: #ffffff;
+  --theme-text: #1f2937;
+  --theme-accent: #f3f4f6;
   --theme-gradient: from-purple-500 to-pink-500;
 }
 
 /* 봄 테마 */
 .theme-spring {
-  --theme-primary: #10B981;
-  --theme-secondary: #F59E0B;
-  --theme-background: #F0FDF4;
-  --theme-surface: #FFFFFF;
-  --theme-text: #1F2937;
-  --theme-accent: #D1FAE5;
+  --theme-primary: #10b981;
+  --theme-secondary: #f59e0b;
+  --theme-background: #f0fdf4;
+  --theme-surface: #ffffff;
+  --theme-text: #1f2937;
+  --theme-accent: #d1fae5;
   --theme-gradient: from-emerald-400 to-green-300;
 }
 
 /* 여름 테마 */
 .theme-summer {
-  --theme-primary: #3B82F6;
-  --theme-secondary: #F59E0B;
-  --theme-background: #EFF6FF;
-  --theme-surface: #FFFFFF;
-  --theme-text: #1F2937;
-  --theme-accent: #DBEAFE;
+  --theme-primary: #3b82f6;
+  --theme-secondary: #f59e0b;
+  --theme-background: #eff6ff;
+  --theme-surface: #ffffff;
+  --theme-text: #1f2937;
+  --theme-accent: #dbeafe;
   --theme-gradient: from-blue-400 to-cyan-300;
 }
 
 /* 가을 테마 */
 .theme-autumn {
-  --theme-primary: #F59E0B;
-  --theme-secondary: #EF4444;
-  --theme-background: #FFFBEB;
-  --theme-surface: #FFFFFF;
-  --theme-text: #1F2937;
-  --theme-accent: #FEF3C7;
+  --theme-primary: #f59e0b;
+  --theme-secondary: #ef4444;
+  --theme-background: #fffbeb;
+  --theme-surface: #ffffff;
+  --theme-text: #1f2937;
+  --theme-accent: #fef3c7;
   --theme-gradient: from-amber-500 to-orange-400;
 }
 
 /* 겨울 테마 */
 .theme-winter {
-  --theme-primary: #6366F1;
-  --theme-secondary: #8B5CF6;
-  --theme-background: #F8FAFC;
-  --theme-surface: #FFFFFF;
-  --theme-text: #1F2937;
-  --theme-accent: #E2E8F0;
+  --theme-primary: #6366f1;
+  --theme-secondary: #8b5cf6;
+  --theme-background: #f8fafc;
+  --theme-surface: #ffffff;
+  --theme-text: #1f2937;
+  --theme-accent: #e2e8f0;
   --theme-gradient: from-indigo-400 to-purple-300;
 }
 
@@ -338,80 +338,88 @@ body {
 }
 
 .theme-gradient {
-  background: linear-gradient(to right, var(--theme-primary), var(--theme-secondary)) !important;
+  background: linear-gradient(
+    to right,
+    var(--theme-primary),
+    var(--theme-secondary)
+  ) !important;
 }
 
 /* 테마별 배경 그라데이션 */
 .theme-default {
-  background: linear-gradient(135deg, #F9FAFB 0%, #F3E8FF 100%) !important;
+  background: linear-gradient(135deg, #f9fafb 0%, #f3e8ff 100%) !important;
 }
 
 .theme-spring {
-  background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%) !important;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
 }
 
 .theme-summer {
-  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%) !important;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
 }
 
 .theme-autumn {
-  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%) !important;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%) !important;
 }
 
 .theme-winter {
-  background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%) !important;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
 }
 
 /* 테마별 카드 배경 */
 .theme-default .bg-white {
-  background-color: #FFFFFF !important;
-  border: 1px solid #F3F4F6 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #f3f4f6 !important;
 }
 
 .theme-spring .bg-white {
-  background-color: #FFFFFF !important;
-  border: 1px solid #D1FAE5 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #d1fae5 !important;
 }
 
 .theme-summer .bg-white {
-  background-color: #FFFFFF !important;
-  border: 1px solid #DBEAFE !important;
+  background-color: #ffffff !important;
+  border: 1px solid #dbeafe !important;
 }
 
 .theme-autumn .bg-white {
-  background-color: #FFFFFF !important;
-  border: 1px solid #FEF3C7 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #fef3c7 !important;
 }
 
 .theme-winter .bg-white {
-  background-color: #FFFFFF !important;
-  border: 1px solid #E2E8F0 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
 }
 
 /* 테마별 버튼 색상 */
 .theme-default .bg-gradient-to-r.from-purple-500.to-pink-500 {
-  background: linear-gradient(to right, #8B5CF6, #EC4899) !important;
+  background: linear-gradient(to right, #8b5cf6, #ec4899) !important;
 }
 
 .theme-spring .bg-gradient-to-r.from-purple-500.to-pink-500 {
-  background: linear-gradient(to right, #10B981, #F59E0B) !important;
+  background: linear-gradient(to right, #10b981, #f59e0b) !important;
 }
 
 .theme-summer .bg-gradient-to-r.from-purple-500.to-pink-500 {
-  background: linear-gradient(to right, #3B82F6, #F59E0B) !important;
+  background: linear-gradient(to right, #3b82f6, #f59e0b) !important;
 }
 
 .theme-autumn .bg-gradient-to-r.from-purple-500.to-pink-500 {
-  background: linear-gradient(to right, #F59E0B, #EF4444) !important;
+  background: linear-gradient(to right, #f59e0b, #ef4444) !important;
 }
 
 .theme-winter .bg-gradient-to-r.from-purple-500.to-pink-500 {
-  background: linear-gradient(to right, #6366F1, #8B5CF6) !important;
+  background: linear-gradient(to right, #6366f1, #8b5cf6) !important;
 }
 
 /* 테마별 버튼 스타일 */
 .theme-btn {
-  background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
+  background: linear-gradient(
+    135deg,
+    var(--theme-primary),
+    var(--theme-secondary)
+  );
   color: white;
   border: none;
   border-radius: 12px;
@@ -449,3 +457,22 @@ body {
   outline: none;
 }
 
+/* 라라 버튼 스타일 */
+.lulu-btn {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 24px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.lulu-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+  background: linear-gradient(135deg, #7c3aed, #db2777);
+}

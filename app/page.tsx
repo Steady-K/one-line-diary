@@ -23,8 +23,17 @@ export default async function Home() {
             />
           </div>
           <h2 className="text-4xl font-bold text-gray-800 mb-2 flex items-center justify-center">
-            <span className="text-5xl mr-3"></span>한줄 일기
-            <span className="text-5xl ml-3"></span>
+            <img
+              src="/characters/lala-happy.png"
+              alt="라라"
+              className="w-8 h-8 object-contain mr-3"
+            />
+            한줄 일기
+            <img
+              src="/characters/lala-happy.png"
+              alt="라라"
+              className="w-8 h-8 object-contain ml-3"
+            />
           </h2>
           <p className="text-gray-600 text-lg">라라와 함께하는 특별한 일기</p>
         </div>

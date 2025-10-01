@@ -142,7 +142,7 @@ export default function PlantGrowth({
     <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
       <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
         <img
-          src="/characters/lala-happy.png"
+          src="/characters/lala-loving.png"
           alt="라라"
           className="w-6 h-6 object-contain mr-2"
         />

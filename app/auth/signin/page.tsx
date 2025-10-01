@@ -56,7 +56,6 @@ export default function SignInPage() {
         {/* 로고 */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-block">
-            <h1 className="text-4xl mb-2">📖</h1>
             <h2 className="text-2xl font-bold text-gray-800">한줄 일기</h2>
           </Link>
         </div>
