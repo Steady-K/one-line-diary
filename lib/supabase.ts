@@ -629,62 +629,39 @@ export const diaryService = {
     };
   },
 
-  // 오늘 일기 조회
-  async getTodayDiary(userId: number, clientDate?: string): Promise<Diary | null> {
-    let year, month, date;
+  // 오늘 일기 조회 (단순화)
+  async getTodayDiary(userId: number): Promise<Diary | null> {
+    // 오늘 날짜 문자열 생성 (YYYY-MM-DD)
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
     
-    if (clientDate) {
-      // 클라이언트에서 전달받은 날짜 사용 (YYYY-MM-DD 형식)
-      const dateParts = clientDate.split('-');
-      year = parseInt(dateParts[0]);
-      month = parseInt(dateParts[1]) - 1; // JavaScript Date는 0부터 시작
-      date = parseInt(dateParts[2]);
-      console.log("클라이언트 날짜 사용:", { year, month: month + 1, date });
-    } else {
-      // 서버에서 계산 (fallback)
-      const now = new Date();
-      const utcToday = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
-      const koreaToday = new Date(utcToday.getTime() + (9 * 60 * 60 * 1000));
-      year = koreaToday.getFullYear();
-      month = koreaToday.getMonth();
-      date = koreaToday.getDate();
-      console.log("서버 날짜 사용:", { year, month: month + 1, date });
-    }
-    
-    // 한국 시간 기준 오늘의 시작과 끝
-    const startOfDay = new Date(Date.UTC(year, month, date, 0, 0, 0));
-    const endOfDay = new Date(Date.UTC(year, month, date, 23, 59, 59));
+    console.log("오늘 일기 조회 - 오늘 날짜:", todayStr);
 
-    console.log("오늘 일기 조회 - 날짜 범위:", {
-      year,
-      month: month + 1,
-      date,
-      startOfDay: startOfDay.toISOString(),
-      endOfDay: endOfDay.toISOString()
-    });
-
-    const { data, error } = await supabase
+    // 모든 일기를 가져와서 오늘 날짜와 비교 (단순한 방법)
+    const { data: allDiaries, error } = await supabase
       .from("diaries")
       .select("*")
       .eq("user_id", userId)
-      .gte("created_at", startOfDay.toISOString())
-      .lte("created_at", endOfDay.toISOString())
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .single();
+      .order("created_at", { ascending: false });
 
     if (error) {
-      if (error.code === 'PGRST116') {
-        // 데이터가 없음
-        console.log("오늘 일기 없음");
-        return null;
-      }
-      console.error("오늘 일기 조회 오류:", error);
+      console.error("일기 조회 오류:", error);
       return null;
     }
 
-    console.log("오늘 일기 발견:", data);
-    return data;
+    // 오늘 날짜의 일기 찾기
+    const todayDiary = allDiaries?.find(diary => {
+      const diaryDate = diary.created_at.split('T')[0]; // YYYY-MM-DD 부분만 추출
+      return diaryDate === todayStr;
+    });
+
+    if (todayDiary) {
+      console.log("오늘 일기 발견:", todayDiary);
+      return todayDiary;
+    } else {
+      console.log("오늘 일기 없음");
+      return null;
+    }
   },
 };
 
