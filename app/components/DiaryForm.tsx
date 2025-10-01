@@ -84,7 +84,10 @@ export default function DiaryForm({
       if (response.ok) {
         const data = await response.json();
         console.log("DiaryForm: 오늘 일기 조회 결과:", data);
-        console.log("DiaryForm: hasTodayDiary:", data.hasTodayDiary);
+        console.log("DiaryForm: 응답 데이터 타입:", typeof data);
+        console.log("DiaryForm: hasTodayDiary 타입:", typeof data.hasTodayDiary);
+        console.log("DiaryForm: hasTodayDiary 값:", data.hasTodayDiary);
+        console.log("DiaryForm: diary 데이터 타입:", typeof data.diary);
         console.log("DiaryForm: diary 데이터:", data.diary);
         
         if (data.hasTodayDiary && data.diary) {

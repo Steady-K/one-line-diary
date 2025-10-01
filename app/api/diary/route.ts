@@ -94,9 +94,9 @@ export async function GET(request: NextRequest) {
       console.log("todayDiary 존재 여부:", !!todayDiary);
 
       // todayDiary가 존재하고 유효한 객체인지 확인
-      if (todayDiary && typeof todayDiary === 'object' && todayDiary.id) {
+      if (todayDiary && typeof todayDiary === "object" && todayDiary.id) {
         console.log("오늘 일기 있음 - 응답 전송");
-        return NextResponse.json({
+        const response = {
           hasTodayDiary: true,
           diary: {
             id: todayDiary.id,
@@ -107,15 +107,19 @@ export async function GET(request: NextRequest) {
             mood: todayDiary.mood,
             is_private: todayDiary.is_private,
             created_at: todayDiary.created_at,
-            updated_at: todayDiary.updated_at
-          }
-        });
+            updated_at: todayDiary.updated_at,
+          },
+        };
+        console.log("응답 데이터:", JSON.stringify(response, null, 2));
+        return NextResponse.json(response);
       } else {
         console.log("오늘 일기 없음 - 응답 전송");
-        return NextResponse.json({
+        const response = {
           hasTodayDiary: false,
-          diary: null
-        });
+          diary: null,
+        };
+        console.log("응답 데이터:", JSON.stringify(response, null, 2));
+        return NextResponse.json(response);
       }
     }
 
