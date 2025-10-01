@@ -309,22 +309,18 @@ export const diaryService = {
 
     // 월별 필터링 추가
     if (month && year) {
-      // 더 정확한 월별 필터링 - UTC 기준으로 정확한 월의 시작과 끝
-      const startDate = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0, 0));
-      const endDate = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
-
+      // 문자열 기반 월별 필터링으로 시간대 문제 완전 회피
+      const yearMonth = `${year}-${month.toString().padStart(2, '0')}`;
+      
       console.log("월별 필터링:", {
         month,
         year,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        startDateLocal: startDate.toLocaleString("ko-KR"),
-        endDateLocal: endDate.toLocaleString("ko-KR"),
+        yearMonth,
+        filter: `created_at LIKE '${yearMonth}%'`
       });
 
-      query = query
-        .gte("created_at", startDate.toISOString())
-        .lte("created_at", endDate.toISOString());
+      // LIKE 연산자로 해당 년월로 시작하는 모든 일기를 가져옴
+      query = query.like("created_at", `${yearMonth}%`);
     }
 
     const { data, error } = await query
@@ -487,17 +483,15 @@ export const diaryService = {
       actualUserId = user.id;
     }
 
-    // UTC 기준으로 정확한 월의 시작과 끝
-    const startDate = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0, 0));
-    const endDate = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
+    // 문자열 기반 월별 필터링으로 시간대 문제 완전 회피
+    const yearMonth = `${year}-${month.toString().padStart(2, '0')}`;
 
     // 해당 월의 모든 일기 가져오기
     const { data: diaries, error } = await supabase
       .from("diaries")
       .select("*")
       .eq("user_id", actualUserId)
-      .gte("created_at", startDate.toISOString())
-      .lte("created_at", endDate.toISOString())
+      .like("created_at", `${yearMonth}%`)
       .order("created_at", { ascending: true });
 
     if (error) {
