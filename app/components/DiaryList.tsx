@@ -188,15 +188,6 @@ export default function DiaryList({
         </button>
       </div>
 
-      {/* 안내 메시지 */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-6">
-        <div className="flex items-center space-x-2">
-          <span className="text-blue-600">ℹ️</span>
-          <p className="text-sm text-blue-700">
-            모든 일기를 수정/삭제할 수 있습니다. 언제든지 내용을 변경해보세요!
-          </p>
-        </div>
-      </div>
 
       {/* 일기 목록 */}
       {diaries.length === 0 ? (
