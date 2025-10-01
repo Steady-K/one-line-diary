@@ -74,6 +74,7 @@ export async function GET(request: NextRequest) {
     const month = parseInt(searchParams.get("month") || "0");
     const year = parseInt(searchParams.get("year") || "0");
     const today = searchParams.get("today") === "true";
+    const date = searchParams.get("date"); // 클라이언트에서 전달받은 날짜 (YYYY-MM-DD)
     const userId = parseInt(session.user.id);
     const userEmail = session.user.email || undefined;
 
@@ -83,12 +84,13 @@ export async function GET(request: NextRequest) {
       year,
       limit,
       today,
+      date,
       currentDate: new Date().toISOString(),
     });
 
     // 오늘 일기 확인 요청인 경우
     if (today) {
-      const todayDiary = await diaryService.getTodayDiary(userId);
+      const todayDiary = await diaryService.getTodayDiary(userId, date);
       console.log("오늘 일기 확인 결과:", todayDiary);
       
       if (todayDiary) {

@@ -630,16 +630,26 @@ export const diaryService = {
   },
 
   // 오늘 일기 조회
-  async getTodayDiary(userId: number): Promise<Diary | null> {
-    // UTC 기준으로 오늘 날짜 계산 (타임존 차이 방지)
-    const now = new Date();
-    const utcToday = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
+  async getTodayDiary(userId: number, clientDate?: string): Promise<Diary | null> {
+    let year, month, date;
     
-    // 한국 시간(UTC+9) 기준으로 오늘 날짜 계산
-    const koreaToday = new Date(utcToday.getTime() + (9 * 60 * 60 * 1000));
-    const year = koreaToday.getFullYear();
-    const month = koreaToday.getMonth();
-    const date = koreaToday.getDate();
+    if (clientDate) {
+      // 클라이언트에서 전달받은 날짜 사용 (YYYY-MM-DD 형식)
+      const dateParts = clientDate.split('-');
+      year = parseInt(dateParts[0]);
+      month = parseInt(dateParts[1]) - 1; // JavaScript Date는 0부터 시작
+      date = parseInt(dateParts[2]);
+      console.log("클라이언트 날짜 사용:", { year, month: month + 1, date });
+    } else {
+      // 서버에서 계산 (fallback)
+      const now = new Date();
+      const utcToday = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
+      const koreaToday = new Date(utcToday.getTime() + (9 * 60 * 60 * 1000));
+      year = koreaToday.getFullYear();
+      month = koreaToday.getMonth();
+      date = koreaToday.getDate();
+      console.log("서버 날짜 사용:", { year, month: month + 1, date });
+    }
     
     // 한국 시간 기준 오늘의 시작과 끝
     const startOfDay = new Date(Date.UTC(year, month, date, 0, 0, 0));

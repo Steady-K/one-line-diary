@@ -78,7 +78,15 @@ export default function DiaryForm({
   const checkTodayDiary = async () => {
     console.log("DiaryForm: checkTodayDiary 시작");
     try {
-      const response = await fetch("/api/diary?today=true");
+      // 현재 한국 시간을 ISO 문자열로 전달
+      const now = new Date();
+      const koreaTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (9 * 60 * 60 * 1000));
+      const koreaDateStr = koreaTime.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+      
+      console.log("DiaryForm: 현재 한국 시간:", koreaTime.toISOString());
+      console.log("DiaryForm: 한국 날짜:", koreaDateStr);
+      
+      const response = await fetch(`/api/diary?today=true&date=${koreaDateStr}`);
       console.log("DiaryForm: API 응답 상태:", response.status);
       
       if (response.ok) {
