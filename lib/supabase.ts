@@ -309,26 +309,16 @@ export const diaryService = {
 
     // 월별 필터링 추가
     if (month && year) {
-      // 월별 필터링 - 다음 달 첫날로 설정
-      const yearMonth = `${year}-${month.toString().padStart(2, '0')}`;
-      const nextMonth = month === 12 ? 1 : month + 1;
-      const nextYear = month === 12 ? year + 1 : year;
-      const nextMonthStr = `${nextYear}-${nextMonth.toString().padStart(2, '0')}`;
+      console.log("월별 필터링 요청:", { month, year });
       
-      console.log("월별 필터링:", {
-        month,
-        year,
-        yearMonth,
-        nextMonth,
-        nextYear,
-        nextMonthStr,
-        startDate: `${yearMonth}-01T00:00:00.000Z`,
-        endDate: `${nextMonthStr}-01T00:00:00.000Z`
-      });
-      
+      // PostgreSQL의 EXTRACT 함수를 사용하여 년월 추출 후 비교
+      // 이 방법은 시간대 문제를 완전히 회피합니다
       query = query
-        .gte('created_at', `${yearMonth}-01T00:00:00.000Z`)
-        .lt('created_at', `${nextMonthStr}-01T00:00:00.000Z`);
+        .filter('created_at', 'gte', `${year}-${month.toString().padStart(2, '0')}-01`)
+        .filter('created_at', 'lt', month === 12 
+          ? `${year + 1}-01-01` 
+          : `${year}-${(month + 1).toString().padStart(2, '0')}-01`
+        );
     }
 
     const { data, error } = await query
@@ -491,17 +481,13 @@ export const diaryService = {
       actualUserId = user.id;
     }
 
-    // 월별 필터링 - UTC 기준으로 정확한 범위 설정
-    const yearMonth = `${year}-${month.toString().padStart(2, '0')}`;
-    
-    // 다음 달 계산
-    const nextMonth = month === 12 ? 1 : month + 1;
-    const nextYear = month === 12 ? year + 1 : year;
-    const nextMonthStr = `${nextYear}-${nextMonth.toString().padStart(2, '0')}`;
-    
-    // 해당 월의 시작과 끝 (UTC 기준)
-    const startOfMonth = `${yearMonth}-01T00:00:00.000Z`;
-    const endOfMonth = `${nextMonthStr}-01T00:00:00.000Z`;
+    // 월별 필터링 - 날짜 문자열로 직접 비교하여 시간대 문제 회피
+    const startOfMonth = `${year}-${month.toString().padStart(2, '0')}-01`;
+    const endOfMonth = month === 12 
+      ? `${year + 1}-01-01` 
+      : `${year}-${(month + 1).toString().padStart(2, '0')}-01`;
+
+    console.log("통계 월별 필터링:", { month, year, startOfMonth, endOfMonth });
 
     // 해당 월의 모든 일기 가져오기
     const { data: diaries, error } = await supabase
