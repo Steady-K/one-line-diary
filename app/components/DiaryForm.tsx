@@ -492,7 +492,7 @@ export default function DiaryForm({
                   오늘의 일기를 이미 작성했어요. 내일 또 만나요!
                 </p>
               </div>
-              
+
               <div className="bg-white rounded-lg p-4 mb-4">
                 <div className="flex items-center justify-center space-x-2 mb-2">
                   <img
@@ -511,7 +511,8 @@ export default function DiaryForm({
                         hour: "2-digit",
                         minute: "2-digit",
                       }
-                    )} 작성
+                    )}{" "}
+                    작성
                   </span>
                   <span className="text-sm text-gray-500">•</span>
                   <span className="text-sm text-purple-600 font-medium">
@@ -519,7 +520,7 @@ export default function DiaryForm({
                   </span>
                 </div>
                 <p className="text-gray-800 leading-relaxed text-center">
-                  "{todayDiary.content}"
+                  &ldquo;{todayDiary.content}&rdquo;
                 </p>
               </div>
 
