@@ -90,13 +90,17 @@ export async function GET(request: NextRequest) {
     if (today) {
       const todayDiary = await diaryService.getTodayDiary(userId);
       console.log("오늘 일기 확인 결과:", todayDiary);
+      console.log("todayDiary 타입:", typeof todayDiary);
+      console.log("todayDiary 존재 여부:", !!todayDiary);
       
       if (todayDiary) {
+        console.log("오늘 일기 있음 - 응답 전송");
         return NextResponse.json({
           hasTodayDiary: true,
           diary: todayDiary
         });
       } else {
+        console.log("오늘 일기 없음 - 응답 전송");
         return NextResponse.json({
           hasTodayDiary: false,
           diary: null
