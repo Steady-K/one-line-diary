@@ -193,8 +193,7 @@ export default function DiaryList({
         <div className="flex items-center space-x-2">
           <span className="text-blue-600">ℹ️</span>
           <p className="text-sm text-blue-700">
-            <strong>오늘 작성한 일기만</strong> 수정/삭제할 수 있습니다. 과거
-            일기는 읽기 전용으로 보관됩니다.
+            모든 일기를 수정/삭제할 수 있습니다. 언제든지 내용을 변경해보세요!
           </p>
         </div>
       </div>
@@ -265,7 +264,7 @@ export default function DiaryList({
                   )}
                 </div>
 
-                {!isPremium && isTodayDiary(diary.created_at) && (
+                {!isPremium && (
                   <div className="flex space-x-2 ml-4">
                     <button
                       onClick={() => handleEdit(diary)}
@@ -281,14 +280,6 @@ export default function DiaryList({
                     >
                       <TrashIcon className="w-4 h-4" />
                     </button>
-                  </div>
-                )}
-
-                {!isPremium && !isTodayDiary(diary.created_at) && (
-                  <div className="ml-4 flex items-center">
-                    <span className="text-xs text-gray-400 italic">
-                      읽기 전용
-                    </span>
                   </div>
                 )}
               </div>

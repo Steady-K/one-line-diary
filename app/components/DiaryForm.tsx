@@ -148,6 +148,7 @@ export default function DiaryForm({
           setContent(result.diary.content);
           setEmotion(result.diary.emotion);
           setMood(result.diary.mood);
+          setIsEditing(false); // 수정 모드 해제
           setShowSuccess(true);
           setTimeout(() => setShowSuccess(false), 3000);
 
