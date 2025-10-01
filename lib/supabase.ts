@@ -343,24 +343,23 @@ export const diaryService = {
       })));
     }
 
-    // 클라이언트 사이드에서 정확한 월별 필터링
+    // 클라이언트 사이드에서 정확한 월별 필터링 (문자열 파싱으로 시간대 문제 회피)
     let filteredData = data || [];
     if (month && year && data) {
       filteredData = data.filter(diary => {
-        const diaryDate = new Date(diary.created_at);
-        const diaryYear = diaryDate.getFullYear();
-        const diaryMonth = diaryDate.getMonth() + 1; // getMonth()는 0부터 시작
+        // ISO 문자열에서 년월 추출 (YYYY-MM-DDTHH:mm:ss.sssZ 형태)
+        const createdDateStr = diary.created_at;
+        const yearMonthStr = createdDateStr.substring(0, 7); // "YYYY-MM" 부분만 추출
+        const targetYearMonth = `${year}-${month.toString().padStart(2, '0')}`;
         
         console.log("필터링 체크:", {
           diaryDate: diary.created_at,
-          diaryYear,
-          diaryMonth,
-          targetYear: year,
-          targetMonth: month,
-          match: diaryYear === year && diaryMonth === month
+          yearMonthStr,
+          targetYearMonth,
+          match: yearMonthStr === targetYearMonth
         });
         
-        return diaryYear === year && diaryMonth === month;
+        return yearMonthStr === targetYearMonth;
       });
       
       console.log(`월별 필터링 결과: ${data.length}개 중 ${filteredData.length}개 선택`);
@@ -535,12 +534,20 @@ export const diaryService = {
       .lt("created_at", `${nextYear}-${nextMonth.toString().padStart(2, "0")}-05T23:59:59`)
       .order("created_at", { ascending: true });
 
-    // 클라이언트 사이드에서 정확한 월별 필터링
+    // 클라이언트 사이드에서 정확한 월별 필터링 (문자열 파싱으로 시간대 문제 회피)
     const diaries = allDiaries?.filter(diary => {
-      const diaryDate = new Date(diary.created_at);
-      const diaryYear = diaryDate.getFullYear();
-      const diaryMonth = diaryDate.getMonth() + 1;
-      return diaryYear === year && diaryMonth === month;
+      const createdDateStr = diary.created_at;
+      const yearMonthStr = createdDateStr.substring(0, 7); // "YYYY-MM" 부분만 추출
+      const targetYearMonth = `${year}-${month.toString().padStart(2, '0')}`;
+      
+      console.log("통계 필터링 체크:", {
+        diaryDate: diary.created_at,
+        yearMonthStr,
+        targetYearMonth,
+        match: yearMonthStr === targetYearMonth
+      });
+      
+      return yearMonthStr === targetYearMonth;
     }) || [];
 
     if (error) {
