@@ -631,9 +631,27 @@ export const diaryService = {
 
   // 오늘 일기 조회
   async getTodayDiary(userId: number): Promise<Diary | null> {
-    const today = new Date();
-    const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
-    const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+    // UTC 기준으로 오늘 날짜 계산 (타임존 차이 방지)
+    const now = new Date();
+    const utcToday = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
+    
+    // 한국 시간(UTC+9) 기준으로 오늘 날짜 계산
+    const koreaToday = new Date(utcToday.getTime() + (9 * 60 * 60 * 1000));
+    const year = koreaToday.getFullYear();
+    const month = koreaToday.getMonth();
+    const date = koreaToday.getDate();
+    
+    // 한국 시간 기준 오늘의 시작과 끝
+    const startOfDay = new Date(Date.UTC(year, month, date, 0, 0, 0));
+    const endOfDay = new Date(Date.UTC(year, month, date, 23, 59, 59));
+
+    console.log("오늘 일기 조회 - 날짜 범위:", {
+      year,
+      month: month + 1,
+      date,
+      startOfDay: startOfDay.toISOString(),
+      endOfDay: endOfDay.toISOString()
+    });
 
     const { data, error } = await supabase
       .from("diaries")
@@ -648,12 +666,14 @@ export const diaryService = {
     if (error) {
       if (error.code === 'PGRST116') {
         // 데이터가 없음
+        console.log("오늘 일기 없음");
         return null;
       }
       console.error("오늘 일기 조회 오류:", error);
       return null;
     }
 
+    console.log("오늘 일기 발견:", data);
     return data;
   },
 };

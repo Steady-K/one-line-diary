@@ -79,25 +79,34 @@ export default function DiaryForm({
     console.log("DiaryForm: checkTodayDiary 시작");
     try {
       const response = await fetch("/api/diary?today=true");
+      console.log("DiaryForm: API 응답 상태:", response.status);
+      
       if (response.ok) {
         const data = await response.json();
         console.log("DiaryForm: 오늘 일기 조회 결과:", data);
-        if (data.hasTodayDiary) {
+        console.log("DiaryForm: hasTodayDiary:", data.hasTodayDiary);
+        console.log("DiaryForm: diary 데이터:", data.diary);
+        
+        if (data.hasTodayDiary && data.diary) {
           setTodayDiary(data.diary);
           setContent(data.diary.content);
           setEmotion(data.diary.emotion);
           setMood(data.diary.mood);
-          console.log("DiaryForm: 오늘 일기 있음, 상태 업데이트");
+          console.log("DiaryForm: 오늘 일기 있음, 상태 업데이트 완료");
         } else {
           setTodayDiary(null);
           setContent("");
           setEmotion("😊");
           setMood(5);
-          console.log("DiaryForm: 오늘 일기 없음, 상태 초기화");
+          console.log("DiaryForm: 오늘 일기 없음, 상태 초기화 완료");
         }
+      } else {
+        console.error("DiaryForm: API 응답 오류:", response.status, response.statusText);
+        const errorData = await response.text();
+        console.error("DiaryForm: 오류 상세:", errorData);
       }
     } catch (error) {
-      console.error("오늘 일기 확인 오류:", error);
+      console.error("DiaryForm: 오늘 일기 확인 오류:", error);
     } finally {
       setIsCheckingToday(false);
     }
