@@ -309,9 +309,9 @@ export const diaryService = {
 
     // 월별 필터링 추가
     if (month && year) {
-      // 더 정확한 월별 필터링
-      const startDate = new Date(year, month - 1, 1, 0, 0, 0, 0);
-      const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+      // 더 정확한 월별 필터링 - UTC 기준으로 정확한 월의 시작과 끝
+      const startDate = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0, 0));
+      const endDate = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
 
       console.log("월별 필터링:", {
         month,
@@ -487,8 +487,9 @@ export const diaryService = {
       actualUserId = user.id;
     }
 
-    const startDate = new Date(year, month - 1, 1);
-    const endDate = new Date(year, month, 1);
+    // UTC 기준으로 정확한 월의 시작과 끝
+    const startDate = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0, 0));
+    const endDate = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
 
     // 해당 월의 모든 일기 가져오기
     const { data: diaries, error } = await supabase
@@ -496,7 +497,7 @@ export const diaryService = {
       .select("*")
       .eq("user_id", actualUserId)
       .gte("created_at", startDate.toISOString())
-      .lt("created_at", endDate.toISOString())
+      .lte("created_at", endDate.toISOString())
       .order("created_at", { ascending: true });
 
     if (error) {
