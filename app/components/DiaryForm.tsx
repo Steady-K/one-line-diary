@@ -143,10 +143,11 @@ export default function DiaryForm({
           setShowSuccess(true);
           setTimeout(() => setShowSuccess(false), 3000);
         } else {
-          // 새 일기 작성 완료 시 - 작성 폼 숨기고 완료 메시지 표시
-          setContent("");
-          setMood(5);
-          setEmotion("😊");
+          // 새 일기 작성 완료 시 - 오늘 일기가 완료되었음을 표시
+          setTodayDiary(result.diary);
+          setContent(result.diary.content);
+          setEmotion(result.diary.emotion);
+          setMood(result.diary.mood);
           setShowSuccess(true);
           setTimeout(() => setShowSuccess(false), 3000);
 
@@ -477,9 +478,23 @@ export default function DiaryForm({
         {/* 오늘 작성된 일기가 있는 경우 */}
         {todayDiary && !isEditing ? (
           <div className="space-y-4">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center space-x-2">
+            <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-6 text-center">
+              <div className="mb-4">
+                <img
+                  src="/characters/lala-happy.png"
+                  alt="라라"
+                  className="w-16 h-16 object-contain mx-auto mb-3"
+                />
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  오늘도 수고했어! 🌟
+                </h3>
+                <p className="text-gray-600 text-sm">
+                  오늘의 일기를 이미 작성했어요. 내일 또 만나요!
+                </p>
+              </div>
+              
+              <div className="bg-white rounded-lg p-4 mb-4">
+                <div className="flex items-center justify-center space-x-2 mb-2">
                   <img
                     src={
                       emotionImages[
@@ -487,51 +502,41 @@ export default function DiaryForm({
                       ]
                     }
                     alt={todayDiary.emotion}
-                    className="w-6 h-6 object-contain"
+                    className="w-5 h-5 object-contain"
                   />
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-500">
                     {new Date(todayDiary.created_at).toLocaleTimeString(
                       "ko-KR",
                       {
                         hour: "2-digit",
                         minute: "2-digit",
                       }
-                    )}
+                    )} 작성
+                  </span>
+                  <span className="text-sm text-gray-500">•</span>
+                  <span className="text-sm text-purple-600 font-medium">
+                    기분 {todayDiary.mood}/10
                   </span>
                 </div>
-                <div className="flex space-x-2">
-                  <button
-                    onClick={handleEdit}
-                    className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors cursor-pointer"
-                  >
-                    수정
-                  </button>
-                  <button
-                    onClick={handleDelete}
-                    className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition-colors cursor-pointer"
-                  >
-                    삭제
-                  </button>
-                </div>
+                <p className="text-gray-800 leading-relaxed text-center">
+                  "{todayDiary.content}"
+                </p>
               </div>
-              <p className="text-gray-800 font-medium">{todayDiary.content}</p>
-              <div className="mt-2 flex items-center space-x-4">
-                <span className="text-sm text-gray-500">
-                  기분: {todayDiary.mood}/10
-                </span>
-                <span className="text-sm text-gray-500">
-                  날씨: {todayDiary.weather}
-                </span>
-              </div>
-            </div>
 
-            <div className="text-center py-4">
-              <p className="text-gray-500 text-lg font-medium">
-                오늘도 수고했어! 🌟
-              </p>
-              <p className="text-sm text-gray-400 mt-1">
-                내일도 새로운 하루를 기록해보세요
-              </p>
+              <div className="flex space-x-2 justify-center">
+                <button
+                  onClick={handleEdit}
+                  className="px-4 py-2 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors cursor-pointer"
+                >
+                  수정
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="px-4 py-2 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors cursor-pointer"
+                >
+                  삭제
+                </button>
+              </div>
             </div>
           </div>
         ) : (
