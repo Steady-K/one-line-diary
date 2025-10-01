@@ -92,18 +92,18 @@ export async function GET(request: NextRequest) {
       console.log("오늘 일기 확인 결과:", todayDiary);
       console.log("todayDiary 타입:", typeof todayDiary);
       console.log("todayDiary 존재 여부:", !!todayDiary);
-      
+
       if (todayDiary) {
         console.log("오늘 일기 있음 - 응답 전송");
         return NextResponse.json({
           hasTodayDiary: true,
-          diary: todayDiary
+          diary: todayDiary,
         });
       } else {
         console.log("오늘 일기 없음 - 응답 전송");
         return NextResponse.json({
           hasTodayDiary: false,
-          diary: null
+          diary: null,
         });
       }
     }
@@ -122,11 +122,11 @@ export async function GET(request: NextRequest) {
       month,
       year,
       diaryCount: diaries.length,
-      diaries: diaries.map(d => ({
+      diaries: diaries.map((d) => ({
         id: d.id,
         created_at: d.created_at,
-        content: d.content.substring(0, 20) + "..."
-      }))
+        content: d.content.substring(0, 20) + "...",
+      })),
     });
 
     return NextResponse.json({ diaries });

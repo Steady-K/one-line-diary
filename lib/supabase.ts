@@ -657,6 +657,9 @@ export const diaryService = {
 
     if (todayDiary) {
       console.log("오늘 일기 발견:", todayDiary);
+      console.log("반환할 todayDiary 타입:", typeof todayDiary);
+      console.log("반환할 todayDiary 존재 여부:", !!todayDiary);
+      console.log("반환할 todayDiary ID:", todayDiary.id);
       return todayDiary;
     } else {
       console.log("오늘 일기 없음");
