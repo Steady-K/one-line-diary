@@ -309,19 +309,26 @@ export const diaryService = {
 
     // 월별 필터링 추가
     if (month && year) {
-      // PostgreSQL의 to_char 함수를 사용한 월별 필터링
+      // 월별 필터링 - 다음 달 첫날로 설정
       const yearMonth = `${year}-${month.toString().padStart(2, '0')}`;
+      const nextMonth = month === 12 ? 1 : month + 1;
+      const nextYear = month === 12 ? year + 1 : year;
+      const nextMonthStr = `${nextYear}-${nextMonth.toString().padStart(2, '0')}`;
       
       console.log("월별 필터링:", {
         month,
         year,
         yearMonth,
-        filter: `to_char(created_at, 'YYYY-MM') = '${yearMonth}'`
+        nextMonth,
+        nextYear,
+        nextMonthStr,
+        startDate: `${yearMonth}-01T00:00:00.000Z`,
+        endDate: `${nextMonthStr}-01T00:00:00.000Z`
       });
-
-      // PostgreSQL의 to_char 함수로 년월 추출하여 비교
-      query = query.filter('created_at', 'gte', `${yearMonth}-01T00:00:00.000Z`)
-                   .filter('created_at', 'lt', `${yearMonth}-32T00:00:00.000Z`);
+      
+      query = query
+        .gte('created_at', `${yearMonth}-01T00:00:00.000Z`)
+        .lt('created_at', `${nextMonthStr}-01T00:00:00.000Z`);
     }
 
     const { data, error } = await query
@@ -487,9 +494,14 @@ export const diaryService = {
     // 월별 필터링 - UTC 기준으로 정확한 범위 설정
     const yearMonth = `${year}-${month.toString().padStart(2, '0')}`;
     
+    // 다음 달 계산
+    const nextMonth = month === 12 ? 1 : month + 1;
+    const nextYear = month === 12 ? year + 1 : year;
+    const nextMonthStr = `${nextYear}-${nextMonth.toString().padStart(2, '0')}`;
+    
     // 해당 월의 시작과 끝 (UTC 기준)
     const startOfMonth = `${yearMonth}-01T00:00:00.000Z`;
-    const endOfMonth = `${yearMonth}-32T00:00:00.000Z`; // 32일로 설정하여 다음 달 시작까지 포함
+    const endOfMonth = `${nextMonthStr}-01T00:00:00.000Z`;
 
     // 해당 월의 모든 일기 가져오기
     const { data: diaries, error } = await supabase
