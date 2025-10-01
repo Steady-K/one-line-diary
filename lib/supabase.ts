@@ -309,18 +309,19 @@ export const diaryService = {
 
     // 월별 필터링 추가
     if (month && year) {
-      // 문자열 기반 월별 필터링으로 시간대 문제 완전 회피
+      // PostgreSQL의 to_char 함수를 사용한 월별 필터링
       const yearMonth = `${year}-${month.toString().padStart(2, '0')}`;
       
       console.log("월별 필터링:", {
         month,
         year,
         yearMonth,
-        filter: `created_at LIKE '${yearMonth}%'`
+        filter: `to_char(created_at, 'YYYY-MM') = '${yearMonth}'`
       });
 
-      // LIKE 연산자로 해당 년월로 시작하는 모든 일기를 가져옴
-      query = query.like("created_at", `${yearMonth}%`);
+      // PostgreSQL의 to_char 함수로 년월 추출하여 비교
+      query = query.filter('created_at', 'gte', `${yearMonth}-01T00:00:00.000Z`)
+                   .filter('created_at', 'lt', `${yearMonth}-32T00:00:00.000Z`);
     }
 
     const { data, error } = await query
@@ -483,15 +484,20 @@ export const diaryService = {
       actualUserId = user.id;
     }
 
-    // 문자열 기반 월별 필터링으로 시간대 문제 완전 회피
+    // 월별 필터링 - UTC 기준으로 정확한 범위 설정
     const yearMonth = `${year}-${month.toString().padStart(2, '0')}`;
+    
+    // 해당 월의 시작과 끝 (UTC 기준)
+    const startOfMonth = `${yearMonth}-01T00:00:00.000Z`;
+    const endOfMonth = `${yearMonth}-32T00:00:00.000Z`; // 32일로 설정하여 다음 달 시작까지 포함
 
     // 해당 월의 모든 일기 가져오기
     const { data: diaries, error } = await supabase
       .from("diaries")
       .select("*")
       .eq("user_id", actualUserId)
-      .like("created_at", `${yearMonth}%`)
+      .gte("created_at", startOfMonth)
+      .lt("created_at", endOfMonth)
       .order("created_at", { ascending: true });
 
     if (error) {
